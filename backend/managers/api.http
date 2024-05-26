@@ -1,0 +1,51 @@
+@HOST = http://localhost:9000
+
+# @name Register
+POST {{HOST}}/managers HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "example2",
+    "lastName": "example2",
+    "email": "example2@gmail.com",
+    "password": "example"
+}
+
+###
+# @name Auth
+POST {{HOST}}/auth HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "example@gmail.com",
+    "password": "example"  
+}
+
+###
+# @name CreateStore
+POST {{HOST}}/stores HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "rei dos salgados 2"
+}
+
+###
+# @name FindManagerWithStores
+GET {{HOST}}/managers HTTP/1.1
+
+###
+# @name CreateProduct
+POST {{HOST}}/products HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "produto01",
+    "description": "description01",
+    "storeId": "293f022e-9b45-47b4-824c-063e4cdfe719" 
+    
+}
+
+###
+# @name getInformations
+GET {{HOST}}/managers/my-informations HTTP/1.1

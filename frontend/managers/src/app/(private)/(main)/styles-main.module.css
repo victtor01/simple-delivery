@@ -1,0 +1,8 @@
+.link-selected::before {
+  content: "";
+  border-radius: 0 0.4rem 0.4rem 0;
+  position: absolute;
+  width: 0.4rem;
+  transition: all 0.2s;
+  left: 0;
+}/*# sourceMappingURL=styles-main.module.css.map */

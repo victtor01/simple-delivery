@@ -20,11 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className="light">
+    <html lang="pt-br" className="dark">
       <body
         className={`${inter.className}
-      bg-white dark:bg-zinc-800 
-      text-gray-700 dark:text-gray-200 `}
+        bg-white dark:bg-zinc-800
+        text-gray-700 dark:text-gray-200`}
       >
         <QueryProvider>{children}</QueryProvider>
       </body>

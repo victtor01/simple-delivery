@@ -1,3 +1,4 @@
+import { Manager } from 'src/managers/entities/manager.entity';
 import { Store } from 'src/stores/entities/store.entity';
 import {
   Column,
@@ -20,6 +21,9 @@ export class Product {
   @Column({ name: 'description', type: 'text' })
   description: string;
 
+  @Column({ name: 'price', type: 'decimal', precision: 7, scale: 2 })
+  price: number;
+
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: string;
 
@@ -29,7 +33,14 @@ export class Product {
   @Column({ name: 'storeId' })
   storeId: string;
 
+  @Column({ name: 'managerId' })
+  managerId: string;
+
   @ManyToOne(() => Store, (store) => store.products)
   @JoinColumn({ name: 'storeId' })
   store: Store;
+
+  @ManyToOne(() => Manager, (manager) => manager.products)
+  @JoinColumn({ name: 'managerId' })
+  manager: Manager;
 }

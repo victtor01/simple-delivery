@@ -1,3 +1,4 @@
+import { Product } from 'src/products/entities/product.entity';
 import { Store } from 'src/stores/entities/store.entity';
 import {
   Column,
@@ -32,5 +33,8 @@ export class Manager {
   updatedAt: string;
 
   @OneToMany(() => Store, (store) => store.manager)
-  stores: Store[]
+  stores: Store[];
+
+  @OneToMany(() => Product, (product) => product.manager)
+  products: Product[];
 }

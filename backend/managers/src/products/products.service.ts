@@ -22,6 +22,10 @@ export class ProductsService {
     return await this.productRepo.save(product);
   }
 
+  async findByIdAndManager (): Promise<Product> {
+    return
+  }
+
   async findByStore(data: IFindByStore): Promise<Product[]> {
     const { storeId, managerId } = data;
 
@@ -36,8 +40,6 @@ export class ProductsService {
         'Você não pode pegar os dados dessa loja.',
       );
     }
-
-    console.log(products);
 
     return products;
   }

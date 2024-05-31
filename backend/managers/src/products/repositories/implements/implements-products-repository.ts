@@ -20,6 +20,14 @@ export class ImplementsProductsRepository implements ProductsRepository {
     return this.productRepository.save(data);
   }
 
+  findByIdAndManager(id: string, managerId: string): Promise<Product> {
+    return this.productRepository.findOne({
+      where: { 
+        id,
+      }
+    })
+  }
+
   findByStore(storeId: string): Promise<Product[]> {
     return this.productRepository.find({
       where: { storeId },

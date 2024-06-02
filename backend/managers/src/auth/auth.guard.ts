@@ -29,11 +29,11 @@ export class AuthGuard implements CanActivate {
 
     if (isPublic) return true;
 
-    const request = context.switchToHttp().getRequest();
+    const request: Request = context.switchToHttp().getRequest();
     const response: Response = context.switchToHttp().getResponse();
 
-    const token = request?.cookies?.['access_token'] || null;
-    const refresh_token = request?.cookies?.['refresh_token'] || null;
+    const token = request?.cookies?.['__access_token'] || null;
+    const refresh_token = request?.cookies?.['__refresh_token'] || null;
 
     if (!token || !refresh_token) {
       throw new UnauthorizedException('passports não estão presentes!');
@@ -41,27 +41,22 @@ export class AuthGuard implements CanActivate {
 
     try {
       // try get payload
-
       const payload = await this.jwtService.verifyAsync(token, {
         secret: SECRET_KEY,
       });
 
       // returns user with payload
-
       request['manager'] = payload;
     } catch {
       try {
         // get payload of refresh_token
-
         const payload = this.jwtService.decode(token);
 
         // get payload of refresh_token and verify
-
         const refresh_payload =
           await this.jwtService.verifyAsync(refresh_token);
 
         // create new access_token and set in cookies
-
         const PayloadAccessToken: Partial<TokenPayload> = {
           id: refresh_payload.id,
           email: refresh_payload.email,
@@ -70,7 +65,7 @@ export class AuthGuard implements CanActivate {
         const access_token =
           await this.jwtService.signAsync(PayloadAccessToken);
 
-        response.cookie('access_token', access_token, {
+        response.cookie('__access_token', access_token, {
           httpOnly: true,
           sameSite: 'strict',
           path: '/',

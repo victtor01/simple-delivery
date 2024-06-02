@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { ProductsModule } from './products/products.module';
 import { ProxyModule } from './proxy/proxy.module';
+import { StoresGuard } from './stores/stores.guard';
 
 @Module({
   imports: [

@@ -8,7 +8,7 @@ export function useStore() {
     const [storeInfo, setStoreInfo] = useState<Partial<Store> | null>(null);
 
     useEffect(() => {
-      const cookieStore: any = Cookies.get("selectedStore") || null;
+      const cookieStore: any = Cookies.get("selected-store") || null;
 
       if (!cookieStore) return;
 

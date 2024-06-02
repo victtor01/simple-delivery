@@ -7,7 +7,7 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
-  const selectedStoreId = cookies().get("selectedStore")?.value || null;
+  const selectedStoreId = cookies().get("__store")?.value || null;
   if (!selectedStoreId) redirect("/select-store");
 
   return (
@@ -17,8 +17,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
     >
       <MainSidebar />
       <section
-        className="flex 
-        flex-col flex-1"
+        className="flex-col flex flex-1"
       >
         {children}
       </section>

@@ -15,15 +15,10 @@ const useProducts = () => {
   const searchParams = useSearchParams();
   const modelState: Model = searchParams.get("model") as Model;
 
-  const { useCookies: useCookiesStore } = useStore();
-
-  const cookiesStore = useCookiesStore();
-
   const { data: products } = useQuery<Product[]>({
-    queryKey: ["products", cookiesStore?.store?.id],
+    queryKey: ["products"],
     queryFn: async () => {
-      if (!cookiesStore?.store?.id) return;
-      return (await api.get(`/products/${cookiesStore?.store?.id}`)).data;
+      return (await api.get(`/products`)).data;
     },
   });
 
@@ -40,19 +35,20 @@ export default function Products() {
     <>
       {modelState === "create" && <ProductsCreateModel />}
 
-      <section className="w-full flex flex-col h-auto">
-        <header className="w-full p-2 bg-white justify-between flex
-        dark:bg-zinc-800">
-          <div className="flex gap-3 items-center">
+      <section className="flex flex-col w-full h-auto">
+        <header
+          className="flex justify-between w-full p-2 bg-white dark:bg-zinc-800"
+        >
+          <div className="flex items-center gap-3">
             <h1
-              className={`font-semibold ${fontRoboto} bg-gradient-to-r
-              text-lg uppercase bg-clip-text text-transparent
+              className={`font-semibold bg-gradient-to-r
+              text-lg bg-clip-text text-transparent
               from-orange-600 to-orange-500`}
             >
               Todos os produtos
             </h1>
           </div>
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
             <input
               type="text"
               placeholder="Pesquisar produto..."
@@ -61,41 +57,57 @@ export default function Products() {
               dark:bg-zinc-900 dark:border-zinc-700"
             />
             <button
-              className="p-1 rounded-md px-2 dark:border-zinc-700
-              border text-md opacity-95 hover:opacity-100"
+              className="p-1 px-2 border rounded-md dark:border-zinc-700 text-md opacity-95 hover:opacity-100"
             >
               Filtrar
             </button>
             <Link
               href={"?model=create"}
-              className="p-1 px-2 rounded-md bg-gradient-45
-            from-orange-500 to-rose-500 text-white hover:shadow-xl
-            opacity-95 hover:opacity-100"
+              className="p-1 px-2 text-white rounded-md bg-gradient-45 from-orange-500 to-rose-500 hover:shadow-xl opacity-95 hover:opacity-100"
             >
               Create
             </Link>
           </div>
         </header>
         <div className="flex flex-wrap gap-3 p-5">
-          {products?.map((product) => {
+          {products?.map((product, index: number) => {
             return (
               <Link
+                key={index}
                 href={`/products/${product.id}`}
                 className="w-full max-w-[14rem] flex flex-col
-            bg-white h-auto rounded-xl shadow overflow-hidden
-            hover:shadow-xl"
+                bg-white h-auto shadow hover:shadow-xl relative 
+                rounded-xl"
               >
-                <div
-                  className="w-full h-[10rem] bg-gradient-45 from-orange-500
-                to-rose-500"
-                />
+                <span
+                  className="absolute top-[-0.7rem] right-[-0.7rem]
+                  w-10 h-10 bg-zinc-600 shadow rounded-full
+                  grid place-items-center font-semibold
+                  text-gray-50"
+                >
+                  3
+                </span>
 
-                <div className="flex flex-col w-full overflow-auto p-3">
-                  <div className="capitalize font-semibold text-gray-700">
-                    {product?.name}
-                  </div>
-                  <div className="text-gray-400">
-                    {product?.description || "Sem descrição"}
+                <div className="overflow-hidden rounded-xl">
+                  <div
+                    className="w-full h-[10rem] bg-gradient-45 
+                    from-orange-500 to-rose-500"
+                  />
+
+                  <div className="flex flex-col w-full p-3 overflow-auto">
+                    <div
+                      className="flex items-center justify-between font-semibold text-gray-700 capitalize"
+                    >
+                      <span>{product?.name}</span>
+                      <span
+                        className="p-1 px-2 text-orange-500 bg-orange-100 rounded-md"
+                      >
+                        {product?.price}
+                      </span>
+                    </div>
+                    <div className="text-gray-400">
+                      {product?.description || "Sem descrição"}
+                    </div>
                   </div>
                 </div>
               </Link>

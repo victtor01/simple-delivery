@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Res, Get } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res, Get, UseGuards } from '@nestjs/common';
 import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { Manager } from 'src/managers/entities/manager.entity';

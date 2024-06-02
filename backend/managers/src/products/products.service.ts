@@ -7,6 +7,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { ProductsRepository } from './repositories/products-repository';
+import { Manager } from 'src/managers/entities/manager.entity';
 
 interface IFindByStore {
   storeId: string;
@@ -17,13 +18,38 @@ interface IFindByStore {
 export class ProductsService {
   constructor(private readonly productRepo: ProductsRepository) {}
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productRepo.create(createProductDto);
+  async create(data: {
+    createProductDto: CreateProductDto;
+    managerId: string;
+    storeId: string;
+  }): Promise<Product> {
+    const { createProductDto, managerId, storeId } = data;
+
+    const product = this.productRepo.create({
+      body: createProductDto,
+      managerId,
+      storeId,
+    });
+
     return await this.productRepo.save(product);
   }
 
-  async findByIdAndManager (): Promise<Product> {
-    return
+  async findById(data: { managerId: string; productId: string }) {
+    const { managerId, productId } = data;
+
+    const product: Product = await this.productRepo.findById(productId);
+
+    if (!product?.id) return [];
+
+    const managerIdOfProduct = product.managerId;
+
+    if (managerIdOfProduct !== managerId) {
+      throw new UnauthorizedException(
+        'Você não pode pegar as informações desse sproduto',
+      );
+    }
+
+    return product;
   }
 
   async findByStore(data: IFindByStore): Promise<Product[]> {

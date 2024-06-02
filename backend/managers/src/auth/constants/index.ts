@@ -5,5 +5,5 @@ type ConstantsJWT = {
 
 export const constantsJWT: ConstantsJWT = {
   token_expiration: '5h', // 10 minutes
-  token_refresh_expiration: '1d', // 60 minutes
+  token_refresh_expiration: '7d', // 60 minutes
 };

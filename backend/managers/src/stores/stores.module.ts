@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Store } from './entities/store.entity';
 import { Module } from '@nestjs/common';
 import { ProxyModule } from 'src/proxy/proxy.module';
+import { APP_GUARD } from '@nestjs/core';
+import { StoresGuard } from './stores.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Store]), ProxyModule],
@@ -17,5 +19,6 @@ import { ProxyModule } from 'src/proxy/proxy.module';
       useClass: ImplementsStoresRepository,
     },
   ],
+  exports: [StoresService, StoresRepository],
 })
 export class StoresModule {}

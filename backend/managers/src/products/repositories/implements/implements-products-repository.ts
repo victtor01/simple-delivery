@@ -12,8 +12,25 @@ export class ImplementsProductsRepository implements ProductsRepository {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  create(body: CreateProductDto): Product {
-    return this.productRepository.create(body);
+  create(data: {
+    body: CreateProductDto;
+    managerId: string;
+    storeId: string;
+  }): Product {
+    const { body, managerId, storeId } = data;
+    return this.productRepository.create({
+      ...body,
+      managerId,
+      storeId,
+    });
+  }
+
+  findById(productId: string): Promise<Product> {
+    return this.productRepository.findOne({
+      where: {
+        id: productId,
+      },
+    });
   }
 
   save(data: Product): Promise<Product> {
@@ -22,10 +39,10 @@ export class ImplementsProductsRepository implements ProductsRepository {
 
   findByIdAndManager(id: string, managerId: string): Promise<Product> {
     return this.productRepository.findOne({
-      where: { 
+      where: {
         id,
-      }
-    })
+      },
+    });
   }
 
   findByStore(storeId: string): Promise<Product[]> {

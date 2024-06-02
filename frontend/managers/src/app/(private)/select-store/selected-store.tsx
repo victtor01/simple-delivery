@@ -7,6 +7,7 @@ import { FaUnlock, FaUser } from "react-icons/fa";
 import Cookies from "js-cookie";
 import dayjs from "@/utils/dayjs";
 import { useRouter } from "next/navigation";
+import { api } from "@/api";
 
 interface SelectedStoreProps {
   storeSelected: Store;
@@ -16,8 +17,19 @@ interface SelectedStoreProps {
 const useSelectedStore = () => {
   const { push } = useRouter();
 
-  const handleSelectStore = (storeSelected: Store) => {
-    Cookies.set("selectedStore", JSON.stringify(storeSelected));
+  const handleSelectStore = async (storeSelected: Store) => {
+    if(!storeSelected) return;
+
+    const response = await api.post("/auth/select-store", {
+      storeId: storeSelected.id,
+    });
+
+    const { data } = response;
+
+    console.log(data);
+
+    Cookies.set("selected-store", JSON.stringify(storeSelected));
+
     push("/home");
   };
 

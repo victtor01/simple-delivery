@@ -48,10 +48,11 @@ const MainSidebar = () => {
   return (
     <section
       className="w-full max-w-[15rem] h-full border-r bg-white flex
-      dark:bg-zinc-800 dark:border-zinc-700 dark:bg-opacity-60 dark:border-opacity-60"
+      dark:bg-zinc-800 dark:border-zinc-700 
+      dark:bg-opacity-60 dark:border-opacity-60"
     >
       <div className="flex flex-col w-full">
-        <section className="flex-1 flex flex-col">
+        <section className="flex-1">
           <header
             className="text-gray-700 font-semibold text-lg
             px-3 mt-2 capitalize dark:text-white"

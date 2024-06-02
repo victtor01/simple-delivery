@@ -5,10 +5,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { SECRET_KEY } from './constants/secret';
 import { constantsJWT } from './constants';
 import { ManagersModule } from 'src/managers/managers.module';
+import { StoresModule } from 'src/stores/stores.module';
 
 @Module({
   imports: [
     ManagersModule,
+    StoresModule,
     JwtModule.register({
       global: true,
       secret: SECRET_KEY,

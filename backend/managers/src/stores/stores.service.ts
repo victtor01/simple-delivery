@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStoreDto } from './dto/create-store.dto';
-import { UpdateStoreDto } from './dto/update-store.dto';
 import { StoresRepository } from './repositories/stores-repository';
 import { Store } from './entities/store.entity';
 
@@ -14,6 +13,11 @@ export class StoresService {
   ): Promise<Store> {
     const IStore = this.storesRepo.create(createStoreDto, managerId);
     const store = await this.storesRepo.save(IStore);
+    return store;
+  }
+
+  async findById(storeId: string) {
+    const store = await this.storesRepo.findById(storeId);
     return store;
   }
 

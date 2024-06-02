@@ -9,11 +9,22 @@ import { AuthDto } from './dtos/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { ManagersService } from 'src/managers/managers.service';
+import { StoresService } from 'src/stores/stores.service';
+import { Store } from 'src/stores/entities/store.entity';
+import { Manager } from 'src/managers/entities/manager.entity';
+import { constantsJWT } from './constants';
 
 type AuthResponse = {
   access_token: string;
   refresh_token: string;
+  manager: Partial<Manager>;
 };
+
+interface ISelectStore {
+  storeId: string;
+  managerId: string;
+  response: Response;
+}
 
 export interface TokenPayload {
   id: string;
@@ -24,8 +35,13 @@ export interface TokenPayload {
 export class AuthService {
   constructor(
     private readonly managersService: ManagersService,
+    private readonly storesService: StoresService,
     private readonly jwtService: JwtService,
   ) {}
+
+  private refresh_token_expiration = {
+    expiresIn: constantsJWT.token_refresh_expiration,
+  };
 
   async auth(body: AuthDto, response: Response): Promise<AuthResponse> {
     try {
@@ -52,19 +68,17 @@ export class AuthService {
           id: userdb.id,
           email: userdb.email,
         },
-        {
-          expiresIn: '4d',
-        },
+        this.refresh_token_expiration,
       );
 
       // set cookies
-      response.cookie('access_token', access_token, {
+      response.cookie('__access_token', access_token, {
         httpOnly: true,
         sameSite: 'strict',
         path: '/',
       });
 
-      response.cookie('refresh_token', refresh_token, {
+      response.cookie('__refresh_token', refresh_token, {
         httpOnly: true,
         sameSite: 'strict',
         path: '/',
@@ -73,11 +87,42 @@ export class AuthService {
       return {
         access_token,
         refresh_token,
+        manager: {
+          email: userdb.email,
+        },
       };
     } catch (error) {
       console.log(error);
       throw new BadRequestException(error);
     }
+  }
+
+  async selectStore(data: ISelectStore): Promise<Partial<Store>> {
+    const { managerId, storeId, response } = data;
+
+    // check if the store belongs to the manager
+    const store = await this.storesService.findById(storeId);
+
+    const { managerId: managerIdInTheStore } = store;
+    if (managerId.toString() !== managerIdInTheStore.toString()) {
+      throw new UnauthorizedException('você não pode fazer essa ação!');
+    }
+
+    // create jwt and set cookie
+    const jwtStore = await this.jwtService.signAsync({
+      id: store.id,
+    });
+
+    response.cookie('__store', jwtStore, {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/',
+    });
+
+    return {
+      id: store.id,
+      name: store.name,
+    };
   }
 
   async decode(acesss_token: string): Promise<any> {

@@ -6,8 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import styles from "./style.module.css";
 import { z } from "zod";
+
+interface ResponseAuth {
+  access_token: string;
+  refresh_token: string;
+  manager: {
+    email: string;
+  };
+}
 
 const authSchema = z.object({
   email: z.string().min(1),
@@ -28,16 +35,23 @@ const useAuth = () => {
   const router = useRouter();
 
   const auth = async (body: AuthData) => {
-    const response = await api.post("/auth", {
+    const response = await api.post<ResponseAuth>("/auth", {
       email: body.email,
       password: body.password,
     });
 
-    if (response?.data?.access_token) {
-      router.push("/");
+    const data = response.data || null;
+
+    if (!data?.access_token || !data?.manager?.email) {
+      console.error("Houve um erro, verifique as informações!");
     }
 
-    console.log(response);
+    await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: data.manager.email,
+      }),
+    });
   };
 
   return {

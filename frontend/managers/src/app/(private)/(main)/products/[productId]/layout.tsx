@@ -27,7 +27,8 @@ export default function Layout({ children, params }: LayoutProps) {
 
   return (
     <>
-      <header className="flex items-center justify-between w-full p-2 bg-white border-b">
+      <header className="flex items-center justify-between w-full p-2 bg-white border-b
+      dark:bg-gray-900 dark:border-zinc-700">
         <Link
           href="/products"
           className={`flex items-center gap-2 p-1 px-3 
@@ -44,13 +45,14 @@ export default function Layout({ children, params }: LayoutProps) {
       </header>
 
       <section
-        className="flex mx-auto bg-white w-full max-w-[60rem]
-        flex-col rounded-b-xl shadow overflow-hidden"
+        className="flex mx-auto bg-white w-full max-w-[50rem]
+        flex-col rounded-b-xl border overflow-auto dark:border-zinc-700
+        dark:bg-zinc-800"
       >
         <header
-          className="w-full flex gap-3 items-center bg-gray-800 relative
-        p-2 before:content-[''] before:absolute before:w-[2rem] before:h-[2rem]
-        before:bottom-[-1rem] before:right-[2rem] before:bg-gray-800 before:rotate-[45deg]"
+          className="w-full flex items-center bg-gray-800 relative p-2
+          before:content-[''] before:absolute before:w-[2rem] before:h-[2rem]
+          before:bottom-[-1rem] before:right-[2rem] before:bg-gray-800 before:rotate-[45deg]"
         >
           {Object.entries(linksProducts).map(
             ([name, { link }], index: number) => {
@@ -60,15 +62,15 @@ export default function Layout({ children, params }: LayoutProps) {
 
               const selectedLink = pathName === href;
               const caseClassName = selectedLink
-                ? "opacity-100 text-orange-500"
+                ? "opacity-100 text-white bg-gradient-to-r from-red-500 to-orange-600 rounded translate-y-[1rem] shadow-xl"
                 : "bg-transparent text-gray-300 opacity-90";
 
               return (
                 <Link
                   key={index}
                   href={href}
-                  className={`p-2 font-semibold transition-all capitalize
-                    hover:opacity-100 rounded whitespace-nowrap
+                  className={`p-2 px-4 font-semibold transition-all capitalize
+                    hover:opacity-100  whitespace-nowrap
                     ${caseClassName}`}
                 >
                   {name}

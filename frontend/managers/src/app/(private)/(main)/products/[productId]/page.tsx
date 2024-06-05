@@ -32,7 +32,7 @@ export default function ProductInformations({ params }: ProductProps) {
   const { product } = useProduct(productId);
 
   return (
-    <>
+    <div className="p-10 flex flex-col gap-4 rounded-xl">
       <div>
         <div
           className="w-[10rem] h-[10rem] 
@@ -48,9 +48,15 @@ export default function ProductInformations({ params }: ProductProps) {
         </div>
       </div>
 
-      <section className="flex flex-1 h-auto w-full flex-wrap gap-3">
-        <div className="flex flex-col shadow-[inset_2px_2px_6px_rgba(0,0,0,0.1)] p-2 px-3 rounded-lg flex-1">
-          <span className="text-gray-500 font-semibold">Nome do produto</span>
+      <section
+        className="flex flex-1 h-auto w-full 
+        flex-wrap gap-3 *:whitespace-nowrap"
+      >
+        <div
+          className="flex flex-col bg-gray-50
+          p-2 px-3 rounded-lg flex-1"
+        >
+          <span className="text-gray-500 font-semibold">Nome</span>
           <span
             className="text-lg font-semibold text-zinc-700 
             capitalize"
@@ -59,26 +65,47 @@ export default function ProductInformations({ params }: ProductProps) {
           </span>
         </div>
 
-        <div className="flex flex-col shadow-[inset_2px_2px_6px_rgba(0,0,0,0.1)] p-2 px-3 rounded-lg flex-1">
-          <span className="text-gray-500 font-semibold">Descrição do produto</span>
+        <div
+          className="flex flex-col bg-gray-50
+          p-2 px-3 rounded-lg flex-1"
+        >
+          <span className="text-gray-500 font-semibold">Descrição</span>
           <span
             className="text-lg font-semibold text-zinc-700 
             capitalize"
           >
-            {product?.description || 'Sem descrição.'}
+            {product?.description || "Sem descrição."}
           </span>
         </div>
-        
-        <div className="flex flex-col shadow-[inset_2px_2px_6px_rgba(0,0,0,0.1)] p-2 px-3 rounded-lg flex-1">
-          <span className="text-gray-500 font-semibold">Preço do produto</span>
+     
+        <div
+          className="flex flex-col bg-gray-50
+          p-2 px-3 rounded-lg flex-1"
+        >
+          <span className="text-gray-500 font-semibold">
+            Quantidade no estoque
+          </span>
           <span
             className="text-lg font-semibold text-zinc-700 
             capitalize"
           >
-            {product?.price}
+            {product?.quantity}
+          </span>
+        </div>
+
+        <div
+          className="flex flex-col
+          p-2 px-3 rounded-lg flex-1 bg-emerald-50"
+        >
+          <span className="text-gray-500 font-semibold">Preço do produto</span>
+          <span
+            className="text-lg font-semibold text-green-600 
+            capitalize"
+          >
+            R$ {product?.price}
           </span>
         </div>
       </section>
-    </>
+    </div>
   );
 }

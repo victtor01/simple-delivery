@@ -4,6 +4,7 @@ import { QueryProvider } from "@/providers/query-client";
 import dayjs from "dayjs";
 import "./globals.css";
 import "dayjs/locale/pt-br"
+import { cookies } from "next/headers";
 
 dayjs.locale('pt-br')
 
@@ -19,8 +20,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = cookies().get('_theme')?.value || 'light';
+  
   return (
-    <html lang="pt-br" className="light">
+    <html lang="pt-br" className={theme}>
       <body
         className={`${inter.className}
         bg-white dark:bg-zinc-800

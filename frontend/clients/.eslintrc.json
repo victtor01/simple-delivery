@@ -1,0 +1,12 @@
+{
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["./**/*"],
+      "plugins": ["jest"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
+}

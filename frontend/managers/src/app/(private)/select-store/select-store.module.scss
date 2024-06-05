@@ -1,5 +1,5 @@
 .background {
-  background-image: radial-gradient(
+/*   background-image: radial-gradient(
       49% 81% at 45% 47%,
       #ffe20345 0%,
       transparent 100%
@@ -7,5 +7,7 @@
     radial-gradient(113% 91% at 17% -2%, #fecaca 1%, transparent 99%),
     radial-gradient(142% 91% at 83% 7%, #fed7aa 1%, transparent 99%),
     radial-gradient(142% 91% at -6% 74%, #fed7aa 1%, #ff000000 99%),
-    radial-gradient(142% 91% at 111% 84%, #fed7aa 0%, #ff0000ff 100%);
+    radial-gradient(142% 91% at 111% 84%, #fed7aa 0%, #ff0000ff 100%); */
+
+  @apply bg-gradient-to-b from-gray-800 to-zinc-900;
 }

@@ -1,0 +1,14 @@
+.options:hover {
+  display: flex;
+}
+.options {
+  animation: 2s linear;
+  animation-delay: 1s;
+  display: none;
+}
+
+.user-icon-component:hover .options {
+  display: flex !important;
+  animation: 2s linear;
+  animation-delay: 1s;
+}

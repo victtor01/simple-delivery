@@ -4,9 +4,8 @@ import { api } from "@/api";
 import { fontInter, fontOpenSans } from "@/fonts";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { BiPlus, BiSolidCrown } from "react-icons/bi";
+import { BiSolidCrown } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
-import Cookies from "js-cookie";
 import { useStore } from "@/hooks/useStore";
 import { FaCartShopping } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
@@ -26,6 +25,7 @@ const links = {
 };
 
 const useMainSidebar = () => {
+
   const { data } = useQuery({
     queryKey: ["manager-informations"],
     queryFn: async (): Promise<PropsInformations> =>
@@ -48,31 +48,33 @@ const MainSidebar = () => {
   return (
     <section
       className="w-full max-w-[15rem] h-full border-r bg-white flex
-      dark:bg-zinc-800 dark:border-zinc-700 
-      dark:bg-opacity-60 dark:border-opacity-60"
+      dark:bg-zinc-800 dark:border-zinc-700 dark:bg-opacity-60 
+      dark:border-opacity-60"
     >
       <div className="flex flex-col w-full">
-        <section className="flex-1">
-          <header
-            className="text-gray-700 font-semibold text-lg
-            px-3 mt-2 capitalize dark:text-white"
+        <section className="flex-1 flex flex-col">
+          <button
+            className="text-gray-600 font-semibold text-md w-auto
+            capitalize dark:text-white px-5 backdrop-blur-xl m-3 flex
+            bg-purple-50 rounded-md p-2 shadow-inner hover:shadow-xl
+            hover:bg-purple-100 transition-all"
           >
-            <h1 className={fontInter}>{store?.name}</h1>
-          </header>
+            <span className={fontOpenSans}>{store?.name}.</span>
+          </button>
 
           <div className="w-full p-2 flex flex-col gap-3">
             {Object.entries(links).map(([name, { link, icon: Icon }]) => {
               const selectedLink = pathName.includes(link);
               const styleSelected = selectedLink
-                ? `bg-gradient-45 from-rose-500 to-orange-500 text-white ml-5 shadow-xl`
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-200";
+                ? `bg-rose-600 text-white ml-5 shadow-xl`
+                : "hover:bg-zinc-200 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-200";
 
               return (
                 <Link
                   key={name}
                   href={link}
-                  className={`w-full p-2 px-3 flex items-center gap-3 duration-300
-                  text-md rounded-md transition-all ${styleSelected}`}
+                  className={`w-full p-2 px-3 flex items-center gap-3
+                  text-md rounded transition-all font-semibold ${styleSelected}`}
                 >
                   <Icon />
                   {name}
@@ -103,7 +105,7 @@ const MainSidebar = () => {
             </div>
 
             <Link
-              href={"#"}
+              href={"/config"}
               className="p-1 rounded-xl w-9 bg-gray-200 text-gray-800
             h-9 grid place-items-center dark:bg-zinc-700 dark:text-gray-400"
             >

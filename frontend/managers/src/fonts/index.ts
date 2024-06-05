@@ -22,7 +22,7 @@ const inter = Inter({
 });
 
 const valela = Varela_Round({
-  subsets: ["latin-ext"],
+  subsets: ["latin"],
   weight: ["400"],
 });
 

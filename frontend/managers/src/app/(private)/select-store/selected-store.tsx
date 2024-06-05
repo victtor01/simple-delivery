@@ -53,14 +53,15 @@ const SelectedStore = ({
       <div className="mx-auto mt-[10%] flex gap-3 w-full max-w-[30rem] ">
         <motion.div
           layoutId={storeSelected?.id}
-          className={`w-[11rem] h-[11rem] rounded-xl bg-white flex shadow-2xl`}
+          className={`w-[11rem] h-[11rem] rounded-xl bg-gray-700 flex shadow-2xl
+          border-2 border-white`}
         >
           <div
             className="relative flex-1 h-full grid 
             place-items-center w-full"
           >
             <span
-              className="font-semibold text-2xl text-gray-500
+              className="font-semibold text-2xl text-gray-300
               capitalize"
             >
               {storeSelected?.name?.[0]}
@@ -105,7 +106,7 @@ const SelectedStore = ({
               exit={{ opacity: 0, transition: { delay: 0 } }}
               transition={{ delay: 0.3 }}
               onClick={() => handleSelectStore(storeSelected)}
-              className="p-2 px-4 bg-gradient-45 from-rose-500 to-orange-500 
+              className="p-2 px-4 bg-gradient-to-r from-emerald-600 to-green-600
                 text-white rounded-md text-lg flex gap-3 items-center flex-1
                 justify-center hover:shadow-xl"
             >
@@ -120,7 +121,7 @@ const SelectedStore = ({
               exit={{ opacity: 0, transition: { delay: 0 } }}
               transition={{ delay: 0.4 }}
               onClick={() => handleStoreSelected(storeSelected)}
-              className="p-2 px-4 bg-white text-gray-800
+              className="p-2 px-4 bg-red-600 text-gray-200
                 rounded-md text-lg  hover:shadow-xl"
             >
               Cancelar

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule } from './clients/clients.module';
 import { AuthModule } from './auth/auth.module';
 import { ProxyModule } from './proxy/proxy.module';
+import { StoresModule } from './stores/stores.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProxyModule } from './proxy/proxy.module';
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
     }),
     AuthModule,
+    StoresModule,
   ],
   controllers: [AppController],
   providers: [AppService],

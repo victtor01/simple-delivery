@@ -74,11 +74,6 @@ export class AuthGuard implements CanActivate {
         request['manager'] = payload;
       } catch (error) {
         this.logger.error(error);
-
-        response.clearCookie('__access_token');
-        response.clearCookie('__refresh_token');
-        response.clearCookie('_store');
-
         throw new UnauthorizedException({
           message: 'houve um erro ao tentar autenticar',
         });

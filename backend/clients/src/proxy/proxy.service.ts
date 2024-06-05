@@ -8,11 +8,15 @@ import {
 
 @Injectable()
 export class ProxyService {
+
+
+  private proxyUrl = "amqp://guest:guest@127.0.0.1:5673";
+
   private configure(queue: string): ClientProxy {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://guest:guest@127.0.0.1:5673'],
+        urls: [this.proxyUrl],
         queue: queue,
       },
     });
@@ -22,7 +26,7 @@ export class ProxyService {
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://guest:guest@127.0.0.1:5673'],
+        urls: [this.proxyUrl],
         queue: 'managers',
       },
     });

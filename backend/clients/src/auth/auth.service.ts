@@ -2,6 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { LoginDto } from './dtos/login.dto';
 import { ClientsService } from 'src/clients/clients.service';
 
+export interface TokenPayload {
+  id: string;
+  email: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(private readonly clientsService: ClientsService) {}

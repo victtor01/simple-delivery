@@ -19,7 +19,7 @@ export class StoresController {
     private readonly proxy: ProxyService,
   ) {}
 
-  @MessagePattern('findAllStores')
+  @MessagePattern('stores.findAll')
   async findAll(@Ctx() context: RmqContext) {
     const stores = await this.storesService.findAll();
     this.proxy.confirmMessage(context);

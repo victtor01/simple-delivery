@@ -21,3 +21,6 @@ Content-Type: application/json
     "email": "example@gmail.com",
     "password": "example"
 }
+
+###
+GET {{HOST}}/stores HTTP/1.1

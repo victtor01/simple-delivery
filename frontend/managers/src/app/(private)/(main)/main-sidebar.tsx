@@ -56,8 +56,8 @@ const MainSidebar = () => {
           <button
             className="text-gray-600 font-semibold text-md w-auto
             capitalize dark:text-white px-5 backdrop-blur-xl m-3 flex
-            bg-purple-50 rounded-md p-2 shadow-inner hover:shadow-xl
-            hover:bg-purple-100 transition-all"
+            bg-purple-50 rounded-md p-2 shadow-inner hover:shadow-xl dark:shadow-black
+            hover:bg-purple-100 transition-all dark:bg-zinc-700 dark:bg-opacity-50"
           >
             <span className={fontOpenSans}>{store?.name}.</span>
           </button>
@@ -66,7 +66,7 @@ const MainSidebar = () => {
             {Object.entries(links).map(([name, { link, icon: Icon }]) => {
               const selectedLink = pathName.includes(link);
               const styleSelected = selectedLink
-                ? `bg-rose-600 text-white ml-5 shadow-xl`
+                ? `bg-gradient-to-r from-rose-600 to-orange-500 text-white ml-5 shadow`
                 : "hover:bg-zinc-200 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-200";
 
               return (
@@ -74,7 +74,7 @@ const MainSidebar = () => {
                   key={name}
                   href={link}
                   className={`w-full p-2 px-3 flex items-center gap-3
-                  text-md rounded transition-all font-semibold ${styleSelected}`}
+                  text-md rounded-md transition-all font-semibold ${styleSelected}`}
                 >
                   <Icon />
                   {name}

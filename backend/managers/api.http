@@ -1,6 +1,6 @@
 @HOST = http://localhost:9000
 
-# @name Register
+# @name Auth_Register
 POST {{HOST}}/managers HTTP/1.1
 Content-Type: application/json
 
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ###
-# @name Auth
+# @name Auth_Login
 POST {{HOST}}/auth HTTP/1.1
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 ###
-# @name CreateStore
+# @name Store_Create
 POST {{HOST}}/stores HTTP/1.1
 Content-Type: application/json
 
@@ -31,11 +31,11 @@ Content-Type: application/json
 }
 
 ###
-# @name FindManagerWithStores
+# @name Manager_FindWithStores
 GET {{HOST}}/managers HTTP/1.1
 
 ###
-# @name CreateProduct
+# @name Product_Create
 POST {{HOST}}/products HTTP/1.1
 Content-Type: application/json
 
@@ -47,5 +47,5 @@ Content-Type: application/json
 }
 
 ###
-# @name getInformations
+# @name Manager_GetInformations
 GET {{HOST}}/managers/my-informations HTTP/1.1

@@ -58,6 +58,22 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## About Cookies
+
+- `__access_token` is user to save the JWT with user data;
+- `__refresh_token` is for when the access_token expires it will automatically renew in [auth.guard](./src/auth/auth.guard.ts)
+- `__store` stores the information of the selected store (in use) during the user (manager) login
+
+## About api
+
+### api/v1
+
+| Methods           | Endpoint              | Description             | Params               |
+|-------------------|-----------------------|-------------------------|----------------------|
+| POST              | /auth                 | login of user           | `email`: Email of user <br> `password`: Password of user |
+| POST              | /auth/select-store    | selected store to login | `storeId`: Id of store |
+| POST              | Carlos                |                         |                      |
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

@@ -12,8 +12,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <main
-      className="bg-gray-50 dark:bg-zinc-900 w-full h-screen 
-      overflow-auto flex bg-opacity-100 dark:bg-opacity-60"
+      className="bg-gradient-to-r from-orange-50 to-purple-50 dark:bg-zinc-900 w-full h-screen 
+      overflow-auto flex dark:bg-opacity-60 dark:from-zinc-900 dark:to-zinc-900"
     >
       <MainSidebar />
       <section

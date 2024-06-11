@@ -14,21 +14,35 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Manager } from 'src/managers/entities/manager.entity';
 import { StoresGuard } from 'src/stores/stores.guard';
 import { Store } from 'src/stores/entities/store.entity';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import * as multer from 'multer';
 import { extname } from 'path';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @UseGuards(StoresGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
+
+  private storage = multer.diskStorage({
+    destination: './uploads/products',
+    filename: (_, file, callback) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      const ext = extname(file.originalname);
+      const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+      callback(null, filename);
+    },
+  });
+
+  private uploadFileProduct = multer({ storage: this.storage });
 
   private readonly BASE_URL_IMAGE_PRODUCTS = '/uploads/products';
 
@@ -72,11 +86,11 @@ export class ProductsController {
     });
   }
 
-  @Patch()
+  @Patch(':productId')
   @UseInterceptors(
     FileInterceptor('photo', {
-      storage: diskStorage({
-        destination: "uploads/products",
+      storage: multer.diskStorage({
+        destination: 'uploads/products',
         filename: (_, file, callback) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -88,12 +102,31 @@ export class ProductsController {
       }),
     }),
   )
-  async updatePicture(
-    @UploadedFile() file: Express.Multer.File,
-    @Res() response: Response,
+  async update(
+    @Res() res: Response,
+    @Req() req: { manager: Manager },
+    @Param('productId') productId: string,
+    @Body() body: UpdateProductDto,
+    @UploadedFile() file?: Express.Multer.File | null,
   ) {
-    response.status(200).json({
-      url: `${this.BASE_URL_IMAGE_PRODUCTS}/${file.filename}`
-    })
+    try {
+      const { id: managerId } = req.manager;
+  
+      await this.productsService.update({
+        managerId,
+        productId,
+        updateProductDto: {
+          ...body,
+          photo: file?.filename || null
+        },
+      });
+  
+      return res.status(200).json({
+        message: "Atualizado com sucesso!",
+        error: false,
+      });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 }

@@ -31,11 +31,12 @@ const GeneralAppearance = () => {
   const { handleTheme } = useGeneralAppearance();
 
   return (
-    <section className="mx-auto w-full max-w-[60rem] bg-white border">
-      <header className="w-full p-4 border-b">
+    <section className="mx-auto w-full max-w-[60rem] bg-white border dark:bg-gray-800
+    dark:border-gray-700">
+      <header className="w-full p-4 border-b dark:border-gray-600">
         <h1
           className="font-semibold text-gray-500 flex items-center
-        gap-5 text-xl"
+          gap-5 text-xl dark:text-gray-200"
         >
           <LuLayoutDashboard />
           Aparência
@@ -46,7 +47,7 @@ const GeneralAppearance = () => {
         <div className="">
           <h1
             className="font-semibold text-lg
-            text-gray-800"
+            text-gray-800 dark:text-gray-300"
           >
             Modo dark
           </h1>

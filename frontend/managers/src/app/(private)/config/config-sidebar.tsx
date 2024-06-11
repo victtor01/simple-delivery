@@ -21,17 +21,18 @@ const ConfigSidebar = () => {
   return (
     <nav
       className="w-full max-w-[16rem] bg-white flex-1
-      flex flex-col p-2"
+      flex flex-col p-2 dark:bg-gray-900 border-r dark:border-gray-800"
     >
       <header className="flex p-2 justify-between items-center">
         <Link
           href={"/home"}
           className="w-10 h-10 bg-zinc-200 grid 
-        place-items-center rounded-full"
+          place-items-center rounded-full dark:bg-gray-800"
         >
           <IoArrowBack />
         </Link>
-        <h1 className="font-semibold text-gray-600 text-lg">Configurações</h1>
+        <h1 className="font-semibold text-gray-600 text-lg
+        dark:text-gray-100">Configurações</h1>
       </header>
 
       <section className="w-full flex flex-col gap-3 mt-3">
@@ -40,8 +41,9 @@ const ConfigSidebar = () => {
 
           const selected = pathName === href;
           const classNameSelected = selected
-            ? `bg-gray-800 text-white translate-x-[1.5rem] shadow-xl`
-            : `bg-zinc-50`;
+            ? `bg-gray-800 dark:bg-gray-800
+            text-white translate-x-[1.5rem] shadow-xl dark:text-white`
+            : `bg-zinc-50 dark:bg-gray-900 dark:text-gray-400`;
 
           return (
             <Link

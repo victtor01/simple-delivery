@@ -6,11 +6,13 @@ export default function General() {
     <div className="w-full flex flex-col gap-4">
       <GeneralAppearance />
 
-      <section className="mx-auto w-full max-w-[60rem] bg-white border">
-        <header className="w-full p-4 border-b">
+      <section className="mx-auto w-full max-w-[60rem] bg-white border
+      dark:bg-gray-800 dark:border-gray-700">
+        <header className="w-full p-4 border-b
+        dark:border-gray-700">
           <h1
             className="font-semibold text-gray-500 flex items-center
-            gap-5 text-lg"
+            gap-5 text-lg dark:text-gray-300"
           >
             <LuLayoutDashboard />
             Aparência

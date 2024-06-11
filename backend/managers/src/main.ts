@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,18 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.setGlobalPrefix("/api/v1")
+
+  const config = new DocumentBuilder()
+  .setTitle("Managers microservice")
+  .setDescription("The managers' microservice's main objective is to provide the necessary tools for organizing products by MiDelivery")
+  .setVersion('1.0')
+  .addTag('managers')
+  .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api', app, document);
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,

@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { IoArrowBack } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api";
-import { fontInter, fontOpenSans } from "@/fonts";
-import { usePathname } from "next/navigation";
 import { Product } from "@/entities/product";
+import { api } from "@/api";
+import { VscListFlat } from "react-icons/vsc";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { IoMdCart, IoMdPricetag } from "react-icons/io";
 
 interface ProductProps {
   params: {
@@ -32,78 +31,96 @@ export default function ProductInformations({ params }: ProductProps) {
   const { product } = useProduct(productId);
 
   return (
-    <div className="p-10 flex flex-col gap-4 rounded-xl">
-      <div>
+    <div className="flex flex-col gap-4 rounded-xl">
+      <div className="flex gap-3">
         <div
           className="w-[10rem] h-[10rem] 
-              bg-gray-100 rounded-md border
-              grid place-items-center"
+          bg-gray-50 rounded-md
+          grid place-items-center dark:bg-zinc-700 dark:bg-opacity-40"
         >
           <span
             className="font-semibold 
-            text-gray-600"
+            text-gray-600 dark:text-gray-300"
           >
-            Foto
+            
+          </span>
+        </div>
+
+        <div
+          className="flex flex-col bg-gray-50
+          p-2 px-3 rounded-lg flex-1 dark:bg-zinc-700 
+          dark:bg-opacity-40"
+        >
+          <span className="text-gray-500 font-semibold flex items-center gap-3
+          dark:text-gray-300">
+            <VscListFlat size={17} />
+            Descrição
+          </span>
+          <span
+            className="text-lg font-semibold text-zinc-700 
+            capitalize dark:text-zinc-100"
+          >
+            {product?.description || "Sem descrição."}
           </span>
         </div>
       </div>
 
       <section
-        className="flex flex-1 h-auto w-full 
+        className="grid grid-cols-2 flex-1 h-auto w-full 
         flex-wrap gap-3 *:whitespace-nowrap"
       >
-        <div
-          className="flex flex-col bg-gray-50
-          p-2 px-3 rounded-lg flex-1"
-        >
-          <span className="text-gray-500 font-semibold">Nome</span>
+        <div className="flex flex-col gap-1">
           <span
-            className="text-lg font-semibold text-zinc-700 
-            capitalize"
+            className="flex items-center w-full gap-2 font-semibold 
+            text-gray-500 text-md dark:text-gray-300"
+          >
+            <MdDriveFileRenameOutline size={17} />
+            Nome
+          </span>
+          <div
+            className="transparent outline-none resize-none
+              p-2 rounded-md border-2 border-transparent bg-gray-50
+              focus:border-orange-500 h-auto dark:bg-zinc-700
+              dark:bg-opacity-40 dark:placeholder:text-gray-500"
           >
             {product?.name}
-          </span>
+          </div>
         </div>
 
-        <div
-          className="flex flex-col bg-gray-50
-          p-2 px-3 rounded-lg flex-1"
-        >
-          <span className="text-gray-500 font-semibold">Descrição</span>
+        <div className="flex flex-col gap-1">
           <span
-            className="text-lg font-semibold text-zinc-700 
-            capitalize"
+            className="flex items-center w-full gap-2 font-semibold 
+          text-gray-500 text-md dark:text-gray-300"
           >
-            {product?.description || "Sem descrição."}
+            <IoMdCart />
+            Quantidade
           </span>
-        </div>
-     
-        <div
-          className="flex flex-col bg-gray-50
-          p-2 px-3 rounded-lg flex-1"
-        >
-          <span className="text-gray-500 font-semibold">
-            Quantidade no estoque
-          </span>
-          <span
-            className="text-lg font-semibold text-zinc-700 
-            capitalize"
+          <div
+            className="transparent outline-none resize-none
+              p-2 rounded-md border-2 border-transparent bg-gray-50
+              focus:border-orange-500 h-auto dark:bg-zinc-700
+              dark:bg-opacity-40 dark:placeholder:text-gray-500"
           >
             {product?.quantity}
-          </span>
+          </div>
         </div>
 
-        <div
-          className="flex flex-col
-          p-2 px-3 rounded-lg flex-1 bg-emerald-50"
-        >
-          <span className="text-gray-500 font-semibold">Preço do produto</span>
+        <div className="flex flex-col gap-1">
           <span
-            className="text-lg font-semibold text-green-600 
-            capitalize"
+            className="flex items-center w-full gap-2 font-semibold 
+          text-gray-500 text-md dark:text-gray-300"
+          >
+            <IoMdPricetag size={17} />
+            Preço
+          </span>
+          <div
+            className="transparent outline-none resize-none
+              p-2 rounded-md border-2 border-transparent bg-gray-50
+              focus:border-orange-500 h-auto dark:bg-zinc-700
+              dark:bg-opacity-40 dark:placeholder:text-gray-500"
           >
             R$ {product?.price}
-          </span>
+          </div>
         </div>
       </section>
     </div>

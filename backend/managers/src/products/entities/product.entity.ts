@@ -24,6 +24,9 @@ export class Product {
   @Column({ name: 'price', type: 'decimal', precision: 7, scale: 2 })
   price: number;
 
+  @Column({ name: 'photo', nullable: true })
+  photo?: string;
+
   @Column({ name: 'quantity', type: 'int', default: 0 })
   quantity: number;
 

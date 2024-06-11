@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ProductsRepository } from '../products-repository';
 import { Product } from 'src/products/entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateProductDto } from 'src/products/dto/create-product.dto';
+import { UpdateProductDto } from 'src/products/dto/update-product.dto';
 
 @Injectable()
 export class ImplementsProductsRepository implements ProductsRepository {
@@ -50,5 +51,9 @@ export class ImplementsProductsRepository implements ProductsRepository {
       where: { storeId },
       relations: ['store'],
     });
+  }
+
+  update(productId: string, data: UpdateProductDto): Promise<UpdateResult> {
+    return this.productRepository.update(productId, data);
   }
 }

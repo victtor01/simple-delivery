@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ManagersModule } from './managers/managers.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { StoresModule } from './stores/stores.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -12,34 +10,41 @@ import { ProxyModule } from './proxy/proxy.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
+import { CategoriesModule } from './categories/categories.module';
+import { StoresGuard } from './stores/stores.guard';
+import { ProductTopicsModule } from './product-topic/product-topics.module';
+import { TopicOptionModule } from './topic-option/topic-option.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ProxyModule,
     ManagersModule,
-    AuthModule, 
+    AuthModule,
     MulterModule.register({ dest: './uploads' }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads/products'),
       serveRoot: '/uploads/products',
-    }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5435,
-      database: 'mc_managers',
-      username: 'admin',
-      password: 'admin',
+      }),
+      TypeOrmModule.forRoot({
+      type: process.env.DB_TYPE as any,
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      database: process.env.DB_NAME,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
       synchronize: true,
       logging: false,
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
     }),
     StoresModule,
     ProductsModule,
+    CategoriesModule,
+    ProductTopicsModule,
+    TopicOptionModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

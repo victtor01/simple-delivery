@@ -16,5 +16,6 @@ import { ImplementsProductsRepository } from './repositories/implements/implemen
       useClass: ImplementsProductsRepository,
     },
   ],
+  exports: [ProductsService, ProductsRepository],
 })
 export class ProductsModule {}

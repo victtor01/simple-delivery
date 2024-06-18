@@ -19,6 +19,12 @@ export class ImplementsStoresRepository implements StoresRepository {
     });
   }
 
+  findAllStoresByManagerId(managerId: string): Promise<Store[]> {
+    return this.storesRepository.find({
+      where: { managerId }
+    })  
+  }
+
   findById(id: string): Promise<Store> {
     return this.storesRepository.findOne({
       where: { id },

@@ -4,8 +4,9 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { SECRET_KEY } from './constants/secret';
 import { constantsJWT } from './constants';
-import { ManagersModule } from 'src/managers/managers.module';
 import { StoresModule } from 'src/stores/stores.module';
+import { StoresGuard } from 'src/stores/stores.guard';
+import { ManagersModule } from 'src/managers/managers.module';
 
 @Module({
   imports: [

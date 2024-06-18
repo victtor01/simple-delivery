@@ -3,7 +3,9 @@ import { ManagersService } from './managers.service';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { Manager } from './entities/manager.entity';
 import { Public } from 'src/config/constants';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Managers")
 @Controller('managers')
 export class ManagersController {
   constructor(private readonly managersService: ManagersService) {}

@@ -37,7 +37,7 @@ export class ProductsService {
 
   async findById(data: { managerId: string; productId: string }) {
     const { managerId, productId } = data;
-    const product: Product = await this.productRepo.findById(productId);
+    const product: Product = await this.productRepo.findByIdWithTopics(productId);
 
     if (!product?.id) return [];
 
@@ -57,7 +57,7 @@ export class ProductsService {
 
     if (!products?.[0]?.id) return [];
 
-    const managerInStore = products[0].store.managerId === managerId;
+    const managerInStore = products[0].managerId === managerId;
     if (!managerInStore) {
       throw new UnauthorizedException(
         'Você não pode pegar os dados dessa loja.',
@@ -74,9 +74,7 @@ export class ProductsService {
   }): Promise<boolean> {
     const { updateProductDto, managerId, productId } = data;
     // first of all, check if the product belongs to the user
-    const product = await this.productRepo.findById(productId);
-
-    console.log(product.managerId === managerId);
+    const product = await this.productRepo.findByIdWithTopics(productId);
 
     if (product?.managerId !== managerId) {
       throw new UnauthorizedException(

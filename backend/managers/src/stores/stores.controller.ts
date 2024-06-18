@@ -11,7 +11,9 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Stores")
 @Controller('stores')
 export class StoresController {
   constructor(
@@ -24,6 +26,15 @@ export class StoresController {
     const stores = await this.storesService.findAll();
     this.proxy.confirmMessage(context);
     return JSON.stringify(stores);
+  }
+
+  @Get()
+  async findAllStoresByManagerId(
+    @Req() req: { manager: Manager }
+  ){
+    const stores = await this.storesService.findAll();
+
+    return stores;
   }
 
   @Post()

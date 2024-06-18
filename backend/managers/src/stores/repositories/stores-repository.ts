@@ -6,4 +6,5 @@ export abstract class StoresRepository {
   abstract save(data: Store): Promise<Store>;
   abstract findById(id: string): Promise<Store>;
   abstract findAll(): Promise<Store[]>;
+  abstract findAllStoresByManagerId(managerId: string): Promise<Store[]>;
 }

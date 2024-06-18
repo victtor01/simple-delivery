@@ -1,3 +1,4 @@
+import { Category } from 'src/categories/entities/category.entity';
 import { Manager } from 'src/managers/entities/manager.entity';
 import { Product } from 'src/products/entities/product.entity';
 import {
@@ -31,6 +32,9 @@ export class Store {
 
   @OneToMany(() => Product, (product) => product.store)
   products: Product[];
+
+  @OneToMany(() => Category, (category) => category.store)
+  categories: Category[]
 
   @CreateDateColumn()
   createdAt: string;

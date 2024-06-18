@@ -8,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CreateManagerDto } from '../dto/create-manager.dto';
+import { randomUUID } from 'crypto';
 
 @Entity({ name: 'managers' })
 export class Manager {
@@ -37,4 +39,9 @@ export class Manager {
 
   @OneToMany(() => Product, (product) => product.manager)
   products: Product[];
+
+  constructor(props: CreateManagerDto) {
+    this.id = randomUUID();
+    Object.assign(this, props)
+  }
 }

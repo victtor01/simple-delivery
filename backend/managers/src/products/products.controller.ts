@@ -7,13 +7,9 @@ import {
   Req,
   UseGuards,
   Res,
-  Put,
   Patch,
   UseInterceptors,
   UploadedFile,
-  ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
   BadRequestException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -26,7 +22,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { extname } from 'path';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+const  BASE_URL_IMAGE_PRODUCTS = 'uploads/products';
+
+@ApiTags('Products')
 @UseGuards(StoresGuard)
 @Controller('products')
 export class ProductsController {
@@ -44,7 +44,6 @@ export class ProductsController {
 
   private uploadFileProduct = multer({ storage: this.storage });
 
-  private readonly BASE_URL_IMAGE_PRODUCTS = '/uploads/products';
 
   @Post()
   async create(
@@ -77,6 +76,8 @@ export class ProductsController {
   }
 
   @Get()
+
+  @Get('find-by-store')
   findAllByStore(
     @Req() request: { manager: Partial<Manager>; store: Partial<Store> },
   ) {
@@ -90,7 +91,7 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: multer.diskStorage({
-        destination: 'uploads/products',
+        destination: BASE_URL_IMAGE_PRODUCTS,
         filename: (_, file, callback) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -111,18 +112,21 @@ export class ProductsController {
   ) {
     try {
       const { id: managerId } = req.manager;
-  
+
+      const CONDITION_TO_NULL_PHOTO = 'NOTFOUND';
+
+      if (file?.filename) body.photo = file?.filename;
+      else if (body.photo === CONDITION_TO_NULL_PHOTO) body.photo === null;
+      else delete body.photo;
+
       await this.productsService.update({
+        updateProductDto: body,
         managerId,
         productId,
-        updateProductDto: {
-          ...body,
-          photo: file?.filename || null
-        },
       });
-  
+
       return res.status(200).json({
-        message: "Atualizado com sucesso!",
+        message: 'Atualizado com sucesso!',
         error: false,
       });
     } catch (error) {

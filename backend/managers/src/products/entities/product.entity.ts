@@ -1,11 +1,15 @@
+import { Category } from 'src/categories/entities/category.entity';
 import { Manager } from 'src/managers/entities/manager.entity';
+import { ProductTopic } from 'src/product-topic/entities/product-topic.entity';
 import { Store } from 'src/stores/entities/store.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -42,6 +46,9 @@ export class Product {
   @Column({ name: 'managerId' })
   managerId: string;
 
+  @ManyToMany(() => Category, (category) => category.products)
+  categories: Category[];
+
   @ManyToOne(() => Store, (store) => store.products)
   @JoinColumn({ name: 'storeId' })
   store: Store;
@@ -49,4 +56,7 @@ export class Product {
   @ManyToOne(() => Manager, (manager) => manager.products)
   @JoinColumn({ name: 'managerId' })
   manager: Manager;
+
+  @OneToMany(() => ProductTopic, (productTopic) => productTopic.product)
+  productTopics: ProductTopic[];
 }

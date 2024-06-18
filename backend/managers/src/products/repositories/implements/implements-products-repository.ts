@@ -26,10 +26,13 @@ export class ImplementsProductsRepository implements ProductsRepository {
     });
   }
 
-  findById(productId: string): Promise<Product> {
+  findByIdWithTopics(productId: string): Promise<Product> {
     return this.productRepository.findOne({
       where: {
         id: productId,
+      },
+      relations: {
+        productTopics: true,
       },
     });
   }
@@ -41,6 +44,7 @@ export class ImplementsProductsRepository implements ProductsRepository {
   findByIdAndManager(id: string, managerId: string): Promise<Product> {
     return this.productRepository.findOne({
       where: {
+        managerId,
         id,
       },
     });
@@ -49,7 +53,9 @@ export class ImplementsProductsRepository implements ProductsRepository {
   findByStore(storeId: string): Promise<Product[]> {
     return this.productRepository.find({
       where: { storeId },
-      relations: ['store'],
+      relations: {
+        productTopics: true,
+      },
     });
   }
 

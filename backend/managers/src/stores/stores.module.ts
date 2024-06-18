@@ -13,12 +13,13 @@ import { StoresGuard } from './stores.guard';
   imports: [TypeOrmModule.forFeature([Store]), ProxyModule],
   controllers: [StoresController],
   providers: [
+    StoresGuard,
     StoresService,
     {
       provide: StoresRepository,
       useClass: ImplementsStoresRepository,
     },
   ],
-  exports: [StoresService, StoresRepository],
+  exports: [StoresService, StoresRepository, StoresGuard],
 })
 export class StoresModule {}

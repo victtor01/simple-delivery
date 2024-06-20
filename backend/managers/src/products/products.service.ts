@@ -10,6 +10,7 @@ import { Product } from './entities/product.entity';
 import { ProductsRepository } from './repositories/products-repository';
 import { Manager } from 'src/managers/entities/manager.entity';
 import { NotFoundError } from 'rxjs';
+import { UUID } from 'crypto';
 
 interface IFindByStore {
   storeId: string;
@@ -37,7 +38,7 @@ export class ProductsService {
 
   async findById(data: { managerId: string; productId: string }) {
     const { managerId, productId } = data;
-    const product: Product = await this.productRepo.findByIdWithTopics(productId);
+    const product: Product = await this.productRepo.findByIdWithTopicsAndCategories(productId);
 
     if (!product?.id) return [];
 
@@ -73,21 +74,24 @@ export class ProductsService {
     productId: string;
   }): Promise<boolean> {
     const { updateProductDto, managerId, productId } = data;
-    // first of all, check if the product belongs to the user
-    const product = await this.productRepo.findByIdWithTopics(productId);
 
+    // first of all, check if the product belongs to the user
+    const product = await this.productRepo.findByIdWithTopicsAndCategories(productId);
+    
     if (product?.managerId !== managerId) {
       throw new UnauthorizedException(
         'usuário não tem permissão para atualizar esse produto',
       );
     }
 
-    // before, update the product
-    const updatedProduct = await this.productRepo.update(productId, updateProductDto);
+    const productUpdate = new Product(updateProductDto, productId as UUID)
 
-    if(Number(updatedProduct.affected) === 0) {
+    // before, update the product
+    await this.productRepo.save(productUpdate);
+
+/*     if(Number(updatedProduct.affected) === 0) {
       throw new NotFoundException("Nenhum produto atualizado!");
-    }
+    } */
 
     return true;
   }

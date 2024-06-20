@@ -108,6 +108,7 @@ export class ProductsController {
     @Req() req: { manager: Manager },
     @Param('productId') productId: string,
     @Body() body: UpdateProductDto,
+    
     @UploadedFile() file?: Express.Multer.File | null,
   ) {
     try {

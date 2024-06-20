@@ -4,10 +4,11 @@ import { Store } from "@/entities/store";
 import { fontValela } from "@/fonts";
 import { motion } from "framer-motion";
 import { FaUnlock, FaUser } from "react-icons/fa";
-import Cookies from "js-cookie";
-import dayjs from "@/utils/dayjs";
 import { useRouter } from "next/navigation";
 import { api } from "@/api";
+import { queryClient } from "@/providers/query-client";
+import dayjs from "@/utils/dayjs";
+import Cookies from "js-cookie";
 
 interface SelectedStoreProps {
   storeSelected: Store;
@@ -20,13 +21,11 @@ const useSelectedStore = () => {
   const handleSelectStore = async (storeSelected: Store) => {
     if(!storeSelected) return;
 
-    const response = await api.post("/auth/select-store", {
+    await api.post("/auth/select-store", {
       storeId: storeSelected.id,
     });
 
-    const { data } = response;
-
-    console.log(data);
+    queryClient.clear();
 
     Cookies.set("selected-store", JSON.stringify(storeSelected));
 

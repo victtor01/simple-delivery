@@ -21,7 +21,7 @@ Content-Type: application/json
     "password": "example"  
 }
 ###
-# @name Select_Store
+# @name Store_Select
 POST {{HOST}}/auth/select-store HTTP/1.1
 Content-Type: application/json
 
@@ -39,7 +39,7 @@ Content-Type: application/json
     "name": "rei dos salgados 2"
 }
 ###
-# @name Get_All_Stores
+# @name Store_GetAll
 GET {{HOST}}/stores HTTP/1.1
 ###
 
@@ -65,9 +65,28 @@ Content-Type: application/json
 ###
 # @name Product_FindAll
 GET {{HOST}}/products HTTP/1.1
+###
+PATCH {{HOST}}/products/01f374d7-4882-4c78-9ea0-fbbfd5493e36 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "example",
+  "description": "example",
+  "quantity": "3",
+  "price": "3",
+  "categories": [
+    {
+      "id": "c001dbad-cfe0-4289-9464-591035da8487",
+      "name": "teste",
+      "storeId": "293f022e-9b45-47b4-824c-063e4cdfe719"
+    }
+  ],
+  "productTipics": []
+}
+###
 
 # CATEGORIES
-# @name Create_Category
+# @name Category_Create
 POST {{HOST}}/categories HTTP/1.1
 Content-Type: application/json
 
@@ -76,12 +95,12 @@ Content-Type: application/json
 }
 
 ###
-# @name Find_All_Categories
+# @name Category_FindAll
 GET {{HOST}}/categories HTTP/1.1
 
 ###
 # PRODUCT TOPICS
-# @name Create_Product_Topic
+# @name ProductTopic_Create
 POST {{HOST}}/product-topics HTTP/1.1
 Content-Type: application/json
 
@@ -90,6 +109,7 @@ Content-Type: application/json
     "productId": "01f374d7-4882-4c78-9ea0-fbbfd5493e36"
 }
 ###
+# @name @ProductTopic_Update
 PATCH {{HOST}}/product-topics/293f022e-9b45-47b4-824c-063e4cdfe719
 Content-Type: application/json
 

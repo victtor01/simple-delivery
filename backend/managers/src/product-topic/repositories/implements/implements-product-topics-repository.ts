@@ -13,4 +13,8 @@ export class ImplementsProductsTopicsRepository implements ProductTopicsReposito
     return this.productTopic.save(productTopic)
   }
 
+  removeManyById(productTopicsIds: string[]): Promise<any> {
+    return this.productTopic.delete(productTopicsIds)
+  }
+  
 }

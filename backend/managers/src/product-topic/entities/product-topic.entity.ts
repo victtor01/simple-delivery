@@ -7,7 +7,7 @@ import { CreateProductTopicDto } from "../dto/create-product-topic.dto";
 @Entity({ name: "ProductTopic" })
 export class ProductTopic {
   @PrimaryGeneratedColumn('uuid')
-  id: UUID;
+  id: UUID | string;
 
   @Column({ name: 'name' })
   name: string;
@@ -18,7 +18,7 @@ export class ProductTopic {
   @ManyToOne(() => Product, (product) => product.productTopics)
   product: Product
 
-  constructor(createProductTopicDto: CreateProductTopicDto, id?: UUID | null) {
+  constructor(createProductTopicDto: CreateProductTopicDto, id?: UUID | string | null) {
     Object.assign(this, createProductTopicDto)
     this.id = id || randomUUID();
   }

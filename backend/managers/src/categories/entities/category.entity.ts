@@ -1,6 +1,6 @@
 import { Product } from "src/products/entities/product.entity";
 import { Store } from "src/stores/entities/store.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CreateCategoryDto } from "../dto/create-category.dto";
 import { randomUUID } from "crypto";
 

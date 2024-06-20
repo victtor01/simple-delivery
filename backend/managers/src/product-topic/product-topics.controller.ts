@@ -37,7 +37,7 @@ export class ProductTopicsController {
   ) {
     const { id: managerId } = req.manager;
     
-    const updates = await this.productTopicService.saveMany(
+    const updates = await this.productTopicService.updateManyTopicsWithOptions(
       productTopics,
       productId,
       managerId

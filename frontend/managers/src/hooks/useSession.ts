@@ -37,8 +37,7 @@ const useSession = () => {
       const { payload } = await jose.jwtVerify(token, secret);
       return payload;
     } catch (error: any) {
-      throw new Error(error)
-      /* return { exp: null } as unknown as jose.JWTPayload; */
+      return { exp: null } as unknown as jose.JWTPayload;
     }
   };
 

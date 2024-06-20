@@ -4,6 +4,7 @@ import { UpdateProductTopicDto } from './dto/update-product-topic.dto';
 import { ProductTopic } from './entities/product-topic.entity';
 import { ProductTopicsRepository } from './repositories/product-topics-repository';
 import { ProductsRepository } from 'src/products/repositories/products-repository';
+import { Product } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class ProductTopicsService {
@@ -20,23 +21,35 @@ export class ProductTopicsService {
     return this.productTopicsRepository.save(productTopic);
   }
 
-  async saveMany(
+  async updateManyTopicsWithOptions(
     productTopics: ProductTopic[],
     productId: string,
     managerId: string,
   ): Promise<any> {
-    const productInDatabase = await this.productsRepository.findByIdAndManager(
-      productId,
-      managerId,
-    );
-
-    console.log(productTopics)
+    const productInDatabase: Product =
+      await this.productsRepository.findByIdWithTopicsAndCategories(productId);
 
     if (!productInDatabase?.id || productInDatabase?.managerId !== managerId) {
       throw new UnauthorizedException(
         'Usuário não tem permissão para atualizar os tópicos do produto!',
       );
     }
+
+    // 1. delete topics
+
+    const productTopicsIdsToDelete: string[] = productInDatabase?.productTopics
+      ?.filter(
+        (topic) =>
+          !productTopics.some((topicInBody) => topicInBody.id === topic.id),
+      )
+      ?.map((productTopic) => productTopic.id);
+
+    if (productTopicsIdsToDelete?.[0])
+      await this.productTopicsRepository.removeManyById(
+        productTopicsIdsToDelete,
+      );
+
+    // 2. update topics
 
     const updates = await Promise.all(
       productTopics?.map((productTopic) =>

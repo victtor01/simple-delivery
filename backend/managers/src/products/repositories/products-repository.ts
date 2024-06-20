@@ -10,7 +10,7 @@ export abstract class ProductsRepository {
     storeId: string;
   }): Product;
   abstract save(product: Product): Promise<Product>;
-  abstract findByIdWithTopics(productId: string): Promise<Product>;
+  abstract findByIdWithTopicsAndCategories(productId: string): Promise<Product>;
   abstract findByStore(storeId: string): Promise<Product[]>;
   abstract update(productId: string, data: UpdateProductDto): Promise<UpdateResult>
   abstract findByIdAndManager(id: string, managerId: string): Promise<Product>;

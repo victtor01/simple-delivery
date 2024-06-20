@@ -8,7 +8,7 @@ import { BiSolidCrown } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import { useStore } from "@/hooks/useStore";
 import { FaCartShopping } from "react-icons/fa6";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 
 const secound = 1000;
@@ -43,6 +43,7 @@ const useMainSidebar = () => {
 
 const MainSidebar = () => {
   const { data, store } = useMainSidebar();
+  const { push: redirect } = useRouter();
   const pathName = usePathname();
 
   return (
@@ -54,6 +55,8 @@ const MainSidebar = () => {
       <div className="flex flex-col w-full">
         <section className="flex-1 flex flex-col">
           <button
+            type="button"
+            onClick={() => redirect("/select-store")}
             className="text-gray-600 font-semibold text-md w-auto
             capitalize dark:text-white px-5 backdrop-blur-xl m-3 flex
             bg-purple-50 rounded-md p-2 shadow-inner hover:shadow-xl dark:shadow-black

@@ -52,9 +52,9 @@ export default function Layout({ children, params }: LayoutProps) {
       </header>
 
       <section
-        className="flex mx-auto bg-white w-full max-w-[50rem]
+        className="flex mx-auto bg-white w-full max-w-[40rem]
         flex-col rounded-b-xl border overflow-auto dark:border-zinc-700
-        dark:bg-zinc-800 my-auto rounded-xl p-10 gap-4"
+        dark:bg-zinc-800 my-auto rounded-xl gap-4"
       >
 
         <section

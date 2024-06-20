@@ -7,15 +7,24 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { UUID, randomUUID } from 'crypto';
 
 @Entity({ name: 'products' })
 export class Product {
+
+  constructor(props: Partial<Product>, id?: UUID) {
+      Object.assign(this, props);
+      this.id = id || randomUUID();
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -47,6 +56,7 @@ export class Product {
   managerId: string;
 
   @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
   categories: Category[];
 
   @ManyToOne(() => Store, (store) => store.products)

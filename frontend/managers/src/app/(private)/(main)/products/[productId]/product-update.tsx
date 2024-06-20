@@ -8,7 +8,13 @@ import { Product } from "@/entities/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  UseFormRegister,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { IoMdPhotos, IoMdPricetag } from "react-icons/io";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { VscListFlat } from "react-icons/vsc";
@@ -20,9 +26,7 @@ import { useRouter } from "next/navigation";
 import { getImageProduct } from "@/utils/getImageProduct";
 import { PiPlus } from "react-icons/pi";
 import { BiMinus } from "react-icons/bi";
-import { ProductTopic } from "@/entities/product-topic";
 import { z } from "zod";
-import { all } from "axios";
 
 const CONDITION_TO_NULL_PHOTO = "NOTFOUND";
 
@@ -43,6 +47,13 @@ const schemaUpdateProduct = z.object({
     z.object({
       id: z.string().nullable(),
       name: z.string(),
+      topicOptions: z.array(
+        z.object({
+          id: z.string().nullable(),
+          name: z.string(),
+          price: z.string(),
+        })
+      ),
     })
   ),
 });
@@ -115,12 +126,16 @@ const useProduct = (productId: string) => {
       price: product.price,
       description: product.description,
       quantity: product?.quantity,
-      topics: [
-        ...product?.productTopics?.map((topic) => ({
+      topics:
+        product?.productTopics?.map((topic) => ({
           id: topic.id,
           name: topic.name,
-        })),
-      ],
+          topicOptions: topic.topicOptions.map((option) => ({
+            id: option.id,
+            name: option.name,
+            price: String(option.price),
+          })),
+        })) || [],
     });
   };
 
@@ -137,6 +152,65 @@ const useProduct = (productId: string) => {
   };
 };
 
+const OptionComponent = ({
+  control,
+  register,
+  nestIndex,
+}: {
+  control: any;
+  register: UseFormRegister<UpdateProductProps>;
+  nestIndex: number;
+}) => {
+  const { fields, remove, append } = useFieldArray({
+    control,
+    name: `topics[${nestIndex}].topicOptions`,
+  });
+
+  return (
+    <div className="flex flex-col gap-2">
+      {fields.map((item, k) => {
+        return (
+          <div key={item.id}
+            className="flex gap-4">
+            <input
+              className="p-2 bg-gray-50"
+              {...register(`topics.${nestIndex}.topicOptions.${k}.name`)}
+              placeholder="Example"
+            />
+
+            <input
+            className="p-2 bg-gray-50"
+               {...register(`topics.${nestIndex}.topicOptions.${k}.price`)}
+            />
+
+            <button type="button" onClick={() => remove(k)}
+              className="w-8 h-8 grid place-items-center bg-rose-600 text-white
+              rounded-md">
+              <IoClose/>
+            </button>
+          </div>
+        );
+      })}
+
+      <button
+        type="button"
+        className="border-2 border-dashed w-full p-2 opacity-80 
+        hover:opacity-100 rounded-xl"
+        onClick={() =>
+          append({
+            id: null,
+            price: "",
+            name: "EXEMPLE",
+          })
+        }
+      >
+        Novo
+      </button>
+
+    </div>
+  );
+};
+
 export default function ProductUpdate() {
   const params: ParamProps = useParams();
   const searchParams = useSearchParams();
@@ -150,7 +224,8 @@ export default function ProductUpdate() {
   }
 
   const { product, form, isLoading, updateProduct } = useProduct(productId);
-  const { register, handleSubmit, formState, control } = form;
+  const { register, handleSubmit, formState, control, getValues } = form;
+  const imagePreview = getImageProduct(product?.photo);
 
   const {
     append: addNewTopic,
@@ -160,9 +235,6 @@ export default function ProductUpdate() {
     control,
     name: "topics",
   });
-
-  const imagePreview = getImageProduct(product?.photo);
-
   if (isLoading || !model) return;
 
   return (
@@ -375,11 +447,11 @@ export default function ProductUpdate() {
           </div>
 
           <div className="flex flex-col p-6 gap-2">
-            {topics?.map((topic, index: number) => (
-              <div key={index} className="flex flex-col gap-1 w-auto">
+            {topics?.map((topic, indexOfTopic: number) => (
+              <div key={indexOfTopic} className="flex flex-col gap-1 w-auto">
                 <header className="flex justify-between w-auto items-center gap-2">
                   <Controller
-                    name={`topics.${index}.name`}
+                    name={`topics.${indexOfTopic}.name`}
                     defaultValue={topic.name}
                     control={control}
                     render={({ field }) => (
@@ -394,18 +466,9 @@ export default function ProductUpdate() {
                       />
                     )}
                   />
-
-                  <button
-                    className="p-2 px-4 flex items-center gap-2 text-sm
-                    bg-transparent rounded-md border hover:shadow-xl
-                    opacity-90 hover:opacity-100"
-                  >
-                    <PiPlus size={16} />
-                    Opção
-                  </button>
                   <button
                     onClick={() => {
-                      removeTopic(index);
+                      removeTopic(indexOfTopic);
                     }}
                     className="justify-center flex items-center gap-2 text-sm
                     bg-rose-600 rounded-md hover:shadow-xl w-8 h-8
@@ -414,6 +477,10 @@ export default function ProductUpdate() {
                     <BiMinus />
                   </button>
                 </header>
+
+                <section className="flex flex-col px-8 mx-3 border-l-[0.3rem] border-gray-300">
+                  <OptionComponent nestIndex={indexOfTopic} control={control} register={register}/>
+                </section>
               </div>
             ))}
 
@@ -423,6 +490,7 @@ export default function ProductUpdate() {
                 addNewTopic({
                   id: null,
                   name: "",
+                  topicOptions: [],
                 })
               }
               className="w-auto border-2 border-dashed p-3 text-gray-600 text-lg

@@ -36,9 +36,15 @@ export class ProductsService {
     return await this.productRepo.save(product);
   }
 
-  async findById(data: { managerId: string; productId: string }) {
+  async findByIdWithAllRelations (productId: string): Promise<Product> {
+    const products = await this.productRepo.findByIdWithAllRelations(productId)
+  
+    return products;
+  }
+
+  async findByIdAndManagerId(data: { managerId: string; productId: string }) {
     const { managerId, productId } = data;
-    const product: Product = await this.productRepo.findByIdWithTopicsAndCategories(productId);
+    const product: Product = await this.productRepo.findByIdWithAllRelations(productId);
 
     if (!product?.id) return [];
 
@@ -76,7 +82,7 @@ export class ProductsService {
     const { updateProductDto, managerId, productId } = data;
 
     // first of all, check if the product belongs to the user
-    const product = await this.productRepo.findByIdWithTopicsAndCategories(productId);
+    const product = await this.productRepo.findByIdWithAllRelations(productId);
     
     if (product?.managerId !== managerId) {
       throw new UnauthorizedException(

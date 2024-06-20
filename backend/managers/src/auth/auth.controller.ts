@@ -41,7 +41,6 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ): Promise<AuthResponse> {
     const logged = await this.authService.auth(AuthBody, response);
-
     return logged;
   }
 

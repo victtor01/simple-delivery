@@ -12,8 +12,9 @@ const apiPublic = ["/api/login"];
 export async function middleware(req: NextRequest) {
   const pathname: string = req.nextUrl.pathname;
 
-  if (publicRoutes.includes(pathname) || apiPublic.includes(pathname))
+  if (publicRoutes.includes(pathname) || apiPublic.includes(pathname)) {
     return NextResponse.next();
+  }
 
   // valid session
   const { isSessionValid } = useSession();
@@ -21,6 +22,7 @@ export async function middleware(req: NextRequest) {
   const validSession: boolean = await isSessionValid();
 
   // when the session is valid but the user cannot access the public route
+  
   if (parsePublic.includes(pathname) && validSession) {
     return NextResponse.redirect(new URL("/", req.url));
   }

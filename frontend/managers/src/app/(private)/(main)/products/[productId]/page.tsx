@@ -10,7 +10,6 @@ import { getImageProduct } from "@/utils/getImageProduct";
 import Image from "next/image";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { ProductTopic } from "@/entities/product-topic";
-import { PiPlus } from "react-icons/pi";
 import { Category } from "@/entities/category";
 
 interface ProductProps {
@@ -155,7 +154,9 @@ export default function ProductInformations({ params }: ProductProps) {
 
         <div className="flex p-8">
           {product?.categories?.map((category: Category) => (
-            <div className="flex gap-1 w-auto shadow bg-gray-100 p-2 px-4 border
+            <div
+            key={category.id}
+            className="flex gap-1 w-auto shadow bg-gray-100 p-2 px-4 border
             rounded-lg dark:bg-zinc-700">
               <div
                 className="font-semibold text-xl
@@ -183,7 +184,9 @@ export default function ProductInformations({ params }: ProductProps) {
 
         <div className="flex flex-col p-8">
           {product?.productTopics?.map((topic: ProductTopic) => (
-            <div className="flex flex-col gap-1 w-auto">
+            <div
+            key={topic.id}
+            className="flex flex-col gap-1 w-auto">
               <header className="flex justify-between w-auto items-center">
                 <h1
                   className="font-semibold text-xl

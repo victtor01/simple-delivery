@@ -11,7 +11,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { IS_PUBLIC_KEY, IS_PUBLIC_KEY_STORE } from 'src/config/constants';
 import { SECRET_KEY } from 'src/auth/constants/secret';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 @Injectable()
 export class StoresGuard implements CanActivate {
@@ -40,6 +40,7 @@ export class StoresGuard implements CanActivate {
     if (isPublicStore) return true;
 
     const request: Request = context.switchToHttp().getRequest();
+    const response: Response = context.switchToHttp().getResponse();
     const store = request?.cookies?.['__store'] || null;
 
     if (!store) this.redirectToSelectStore(context);
@@ -54,7 +55,7 @@ export class StoresGuard implements CanActivate {
       request['store'] = payload;
     } catch (err) {
       this.logger.error(err);
-
+      response.clearCookie('__store')
       this.redirectToSelectStore(context);
 
       return false;

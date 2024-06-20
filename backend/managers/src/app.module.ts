@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CategoriesModule } from './categories/categories.module';
 import { StoresGuard } from './stores/stores.guard';
 import { ProductTopicsModule } from './product-topic/product-topics.module';
-import { TopicOptionModule } from './topic-option/topic-option.module';
+import { TopicOptionsModule } from './topic-options/topic-options.module';
 
 @Module({
   imports: [
@@ -42,7 +42,7 @@ import { TopicOptionModule } from './topic-option/topic-option.module';
     ProductsModule,
     CategoriesModule,
     ProductTopicsModule,
-    TopicOptionModule,
+    TopicOptionsModule,
   ],
   providers: [
     {

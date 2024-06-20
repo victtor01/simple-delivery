@@ -69,7 +69,7 @@ export class ProductsController {
     @Req() req: { manager: Manager },
     @Param('productId') productId: string,
   ) {
-    return await this.productsService.findById({
+    return await this.productsService.findByIdAndManagerId({
       managerId: req.manager.id,
       productId,
     });

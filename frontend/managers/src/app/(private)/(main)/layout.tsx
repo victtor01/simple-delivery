@@ -7,9 +7,10 @@ interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-export default function MainLayout({ children }: MainLayoutProps) {
+export default async function MainLayout({ children }: MainLayoutProps) {
   const selectedStoreId = cookies().get("__store")?.value || null;
   const theme = cookies().get("_theme")?.value || 'light'
+
   if (!selectedStoreId) redirect("/select-store");
 
   return (
@@ -30,7 +31,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
         theme={theme}
         transition={Bounce}
       />
-
       <MainSidebar />
       <section className="flex-col flex flex-1">{children}</section>
     </main>

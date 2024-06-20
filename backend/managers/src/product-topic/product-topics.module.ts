@@ -6,9 +6,10 @@ import { ImplementsProductsTopicsRepository } from './repositories/implements/im
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductTopic } from './entities/product-topic.entity';
 import { ProductsModule } from 'src/products/products.module';
+import { TopicOptionsModule } from 'src/topic-options/topic-options.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductTopic]), ProductsModule],
+  imports: [TypeOrmModule.forFeature([ProductTopic]), ProductsModule, TopicOptionsModule],
   controllers: [ProductTopicsController],
   providers: [
     ProductTopicsService,

@@ -37,6 +37,7 @@ export class AuthGuard implements CanActivate {
     const token = request?.cookies?.['__access_token'] || null;
     const refresh_token = request?.cookies?.['__refresh_token'] || null;
 
+/*     console.log(token) */
     if (!token || !refresh_token) {
       throw new UnauthorizedException('passports não estão presentes!');
     }
@@ -46,10 +47,11 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: SECRET_KEY,
       });
-
+      
       // returns user with payload
       request['manager'] = payload;
     } catch {
+      console.log('tentando')
       try {
         // get payload of refresh_token
         const payload = this.jwtService.decode(token);

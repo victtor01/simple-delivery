@@ -29,7 +29,7 @@ const useMainSidebar = () => {
   const { data } = useQuery({
     queryKey: ["manager-informations"],
     queryFn: async (): Promise<PropsInformations> =>
-      (await api.get("managers/my-informations")).data,
+      (await api.get("/managers/my-informations")).data,
     refetchInterval: minute * 60, // one hour
   });
 

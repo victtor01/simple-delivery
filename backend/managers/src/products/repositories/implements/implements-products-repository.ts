@@ -26,12 +26,17 @@ export class ImplementsProductsRepository implements ProductsRepository {
     });
   }
 
-  findByIdWithTopicsAndCategories(productId: string): Promise<Product> {
+  findByIdWithAllRelations(productId: string): Promise<Product> {
     return this.productRepository.findOne({
       where: {
         id: productId,
       },
-      relations: ['productTopics', 'categories']
+      relations: {
+        productTopics: {
+          topicOptions: true,
+        },
+        categories: true,
+      },
     });
   }
 

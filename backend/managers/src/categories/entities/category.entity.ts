@@ -18,7 +18,10 @@ export class Category {
   @Column({ name: 'storeId' })
   storeId: string;
 
-  @ManyToOne(() => Store, (store) => store.categories)
+  @ManyToOne(() => Store, (store) => store.categories, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   @JoinColumn({ name: 'storeId' })
   store: Store
 

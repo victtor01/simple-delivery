@@ -31,13 +31,44 @@ const useProduct = (productId: string) => {
   };
 };
 
+const TopicsComponent = ({ topic }: { topic: ProductTopic }) => {
+  return (
+    <div key={topic.id} className="flex flex-col gap-1 w-auto">
+      <header className="flex justify-between w-auto items-center">
+        <h1
+          className="font-semibold text-xl
+                text-gray-600 dark:text-gray-200"
+        >
+          {topic.name}
+        </h1>
+      </header>
+
+      <div className="flex flex-col gap-2 px-4 border-l-2 border-orange-500">
+        {topic?.topicOptions?.length === 0 && (
+          <div className="font-semibold">Nenhuma opção adicionada</div>
+        )}
+        {topic?.topicOptions?.map((option) => {
+          return (
+            <div key={option.id} className="flex gap-3">
+              <span className="font-semibold text-gray-600 dark:text-gray-200">
+                {option?.name}
+              </span>
+              <span>R$ {option?.price}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 export default function ProductInformations({ params }: ProductProps) {
   const { productId } = params;
   const { product } = useProduct(productId);
   const imagePreview = getImageProduct(product?.photo);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl">
+    <div className="flex flex-col rounded-xl">
       <div className="flex gap-3 px-8 pt-8">
         <div
           className="w-[10rem] h-[10rem] 
@@ -155,11 +186,12 @@ export default function ProductInformations({ params }: ProductProps) {
         <div className="flex p-8">
           {product?.categories?.map((category: Category) => (
             <div
-            key={category.id}
-            className="flex gap-1 w-auto shadow bg-gray-100 p-2 px-4 border
-            rounded-lg dark:bg-zinc-700">
+              key={category.id}
+              className="flex gap-1 w-auto bg-gray-50 p-1 px-3 border
+              rounded-lg dark:bg-zinc-700 cursor-default"
+            >
               <div
-                className="font-semibold text-xl
+                className="font-semibold text-lg
                 text-gray-600 dark:text-gray-200"
               >
                 {category.name}
@@ -170,8 +202,8 @@ export default function ProductInformations({ params }: ProductProps) {
       </section>
 
       <section
-        className="flex flex-col gap-3
-        dark:border-zinc-700 border-t mt-5 relative"
+        className="flex flex-col gap-3 
+        dark:border-zinc-700 border-t relative"
       >
         <div className="absolute top-0 left-[2rem] translate-y-[-50%]">
           <span
@@ -182,27 +214,16 @@ export default function ProductInformations({ params }: ProductProps) {
           </span>
         </div>
 
-        <div className="flex flex-col p-8">
+        <div className="flex flex-col p-8 gap-4 max-h-[20rem] overflow-auto">
           {product?.productTopics?.map((topic: ProductTopic) => (
-            <div
-            key={topic.id}
-            className="flex flex-col gap-1 w-auto">
-              <header className="flex justify-between w-auto items-center">
-                <h1
-                  className="font-semibold text-xl
-                text-gray-600 dark:text-gray-200"
-                >
-                  {topic.name}
-                </h1>
-              </header>
-            </div>
+            <TopicsComponent key={topic.id} topic={topic} />
           ))}
         </div>
       </section>
 
       <footer
-        className="w-full mt-5 border-t p-8 px-8 dark:border-gray-700
-      relative"
+        className="w-full border-t p-8 px-8 dark:border-gray-700
+        relative"
       >
         <div className="absolute top-0 left-[2rem] translate-y-[-50%]">
           <span

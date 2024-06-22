@@ -51,7 +51,6 @@ export class AuthGuard implements CanActivate {
       // returns user with payload
       request['manager'] = payload;
     } catch {
-      console.log('tentando')
       try {
         // get payload of refresh_token
         const payload = this.jwtService.decode(token);

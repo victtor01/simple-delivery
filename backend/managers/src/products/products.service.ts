@@ -36,15 +36,16 @@ export class ProductsService {
     return await this.productRepo.save(product);
   }
 
-  async findByIdWithAllRelations (productId: string): Promise<Product> {
-    const products = await this.productRepo.findByIdWithAllRelations(productId)
-  
+  async findByIdWithAllRelations(productId: string): Promise<Product> {
+    const products = await this.productRepo.findByIdWithAllRelations(productId);
+
     return products;
   }
 
   async findByIdAndManagerId(data: { managerId: string; productId: string }) {
     const { managerId, productId } = data;
-    const product: Product = await this.productRepo.findByIdWithAllRelations(productId);
+    const product: Product =
+      await this.productRepo.findByIdWithAllRelations(productId);
 
     if (!product?.id) return [];
 
@@ -83,19 +84,24 @@ export class ProductsService {
 
     // first of all, check if the product belongs to the user
     const product = await this.productRepo.findByIdWithAllRelations(productId);
-    
+
+    updateProductDto.categories =
+      typeof updateProductDto.categories === 'string'
+        ? JSON.parse(updateProductDto.categories)
+        : updateProductDto.categories || [];
+
     if (product?.managerId !== managerId) {
       throw new UnauthorizedException(
         'usuário não tem permissão para atualizar esse produto',
       );
     }
 
-    const productUpdate = new Product(updateProductDto, productId as UUID)
+    const productUpdate = new Product(updateProductDto, productId as UUID);
 
     // before, update the product
     await this.productRepo.save(productUpdate);
 
-/*     if(Number(updatedProduct.affected) === 0) {
+    /*     if(Number(updatedProduct.affected) === 0) {
       throw new NotFoundException("Nenhum produto atualizado!");
     } */
 

@@ -11,6 +11,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormState } from "react-dom";
 import { api } from "@/api";
+import { toast } from "react-toastify";
+import { QueryClient } from "@tanstack/react-query";
+import { queryClient } from "@/providers/query-client";
+import { Product } from "@/entities/product";
+import { useRouter } from "next/navigation";
 
 const schemaCreateProduct = z.object({
   name: z.string().min(3, "o mínimo para o nome do produto é 3 caracteres"),
@@ -28,10 +33,30 @@ const useCreateProduct = () => {
     resolver: zodResolver(schemaCreateProduct),
   });
 
-  const createProduct = async (dataProduct: CreateProductProps) => {
-    const responseApi = await api.post("/products", dataProduct);
+  const router = useRouter();
 
-    console.log(responseApi);
+  const createProduct = async (dataProduct: CreateProductProps) => {
+    try {
+      const responseApi = api.post("/products", dataProduct);
+
+      const createdProduct: Product =
+        (await (
+          await toast.promise(responseApi, {
+            pending: "Carregando...",
+            success: "Criado com sucesso!",
+            error: "Houve um erro, tente novamente mais tarde!",
+          })
+        )?.data) || {};
+
+      queryClient.setQueriesData(
+        { queryKey: ["products"] },
+        (prev: Product[] | undefined) => {
+          return [...(prev || []), createdProduct];
+        }
+      );
+      
+      router.push('?')
+    } catch (error) {}
   };
 
   return {

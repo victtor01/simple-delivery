@@ -2,14 +2,11 @@
 
 import { api } from "@/api";
 import { Product } from "@/entities/product";
-import { useStore } from "@/hooks/useStore";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ProductsCreateModel } from "./products-create-model";
-import { fontRoboto } from "@/fonts";
 import ProductPreview from "@/components/product-preview";
-import { ListCategories } from "@/components/list-categories";
 import { useCategories } from "@/hooks/useCategories";
 import { ProductsHeader } from "./products-header";
 

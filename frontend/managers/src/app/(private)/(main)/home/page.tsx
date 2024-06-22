@@ -1,9 +1,9 @@
 function Home() {
   return (
     <div
-      className="m-auto p-4 bg-white rounded-xl"
+      className="m-auto p-4 dark:text-white font-semibold text-gray-600 text-lg"
     >
-      Selecione uma loja
+      Em breve...
     </div>
   );
 }

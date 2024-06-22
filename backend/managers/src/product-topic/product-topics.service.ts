@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { CreateProductTopicDto } from './dto/create-product-topic.dto';
 import { UpdateProductTopicDto } from './dto/update-product-topic.dto';
 import { ProductTopic } from './entities/product-topic.entity';
@@ -16,6 +16,8 @@ export class ProductTopicsService {
     private readonly productsService: ProductsService,
     private readonly topicOptionsService: TopicOptionsService,
   ) {}
+
+  private logger: Logger = new Logger('ProductTopicsService');
 
   async create(
     createProductTopicDto: CreateProductTopicDto,
@@ -38,17 +40,15 @@ export class ProductTopicsService {
         'Usuário não tem permissão para atualizar os tópicos do produto!',
       );
     }
-    
-    // 1. delete topics
 
-    const productTopicsIdsToDelete: string[] = productInDatabase?.productTopics?.filter((topic) =>
+    const productTopicsIdsToDelete: string[] = productInDatabase?.productTopics
+      ?.filter(
+        (topic) =>
           !productTopics.some((topicInBody) => topicInBody.id === topic.id),
       )
       ?.map((productTopic) => productTopic.id);
 
     if (productTopicsIdsToDelete?.[0]) {
-      console.log('entrou para deletar', productTopicsIdsToDelete)
-
       await this.productTopicsRepository.removeManyById(
         productTopicsIdsToDelete,
       );
@@ -56,9 +56,10 @@ export class ProductTopicsService {
 
     // 2. update topics
 
-    const updates = await Promise.all(
-      productTopics?.map((productTopic) =>
-        this.productTopicsRepository.save(
+    const savedTopics = await Promise.all(
+      productTopics?.map(async (productTopic, index: number) => {
+        
+        const savedTopic = await this.productTopicsRepository.save(
           new ProductTopic(
             {
               name: productTopic?.name,
@@ -66,8 +67,12 @@ export class ProductTopicsService {
             },
             productTopic?.id || null,
           ),
-        ),
-      ),
+        );
+
+        productTopics[index].id = savedTopic.id;
+
+        return savedTopic
+      }),
     );
 
     // 3. update options of topics
@@ -101,7 +106,7 @@ export class ProductTopicsService {
       .map((option) => option.id);
 
     // 3.2.2 Delete
-    if(topicOptionsIdsToDelete) {
+    if (topicOptionsIdsToDelete[0]) {
       await this.topicOptionsService.deleteMany(topicOptionsIdsToDelete);
     }
 
@@ -121,6 +126,6 @@ export class ProductTopicsService {
       ),
     );
 
-    return updates;
+    return savedTopics;
   }
 }

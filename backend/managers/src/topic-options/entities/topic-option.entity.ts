@@ -28,7 +28,10 @@ export class TopicOption {
   @Column({ name: 'topicProductId' })
   topicProductId: string;
 
-  @ManyToOne(() => ProductTopic, (topic) => topic.topicOptions)
+  @ManyToOne(() => ProductTopic, (topic) => topic.topicOptions, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'topicProductId' })
   topicProduct: ProductTopic;
 }

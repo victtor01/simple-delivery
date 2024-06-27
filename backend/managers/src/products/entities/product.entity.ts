@@ -16,13 +16,14 @@ import {
 } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UUID, randomUUID } from 'crypto';
+import { Order } from 'src/orders/entities/order.entity';
+import { OrdersProduct } from 'src/orders-products/entities/orders-product.entity';
 
 @Entity({ name: 'products' })
 export class Product {
-
   constructor(props: Partial<Product>, id?: UUID) {
-      Object.assign(this, props);
-      this.id = id || randomUUID();
+    Object.assign(this, props);
+    this.id = id || randomUUID();
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -56,7 +57,7 @@ export class Product {
   managerId: string;
 
   @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable()
+  @JoinTable({ name: 'products_categories' })
   categories: Category[];
 
   @ManyToOne(() => Store, (store) => store.products)
@@ -69,4 +70,7 @@ export class Product {
 
   @OneToMany(() => ProductTopic, (productTopic) => productTopic.product)
   productTopics: ProductTopic[];
+
+  @ManyToMany(() => OrdersProduct, (ordersProducts) => ordersProducts.product)
+  ordersProducts: OrdersProduct[];
 }

@@ -1,11 +1,30 @@
 import Link from "next/link";
 
+type StatusText = "open" | "closed";
+
+type StatusInfoType = {
+  [key in StatusText]: {
+    style: string;
+    textPT: string;
+  };
+};
+
+const StatusInfo: StatusInfoType = {
+  open: { style: "bg-emerald-500", textPT: "Aberto" },
+  closed: { style: "bg-rose-500", textPT: "Fechado" },
+};
+
 interface StoreViewPhotoProps {
   logo?: string;
   background?: string;
 }
 
-interface StoreViewInformationProps {}
+interface StoreViewInformationProps {
+  title: string;
+  description: string;
+  link: string;
+  status: StatusText;
+}
 
 interface StoreViewComponentProps {
   link: string;
@@ -17,31 +36,37 @@ const StoreViewPhoto = (props: StoreViewPhotoProps) => {
   return (
     <header
       className="p-3 h-[5rem] relative bg-gradient-45
-      from-purple-500 to-orange-400"
+      from-red-600 to-orange-400"
     >
       <span
         className="w-10 h-10 rounded-full absolute bottom-0 left-[0.5rem] 
-        bg-purple-600 translate-y-[40%]"
+        bg-orange-500 translate-y-[40%]"
       />
     </header>
   );
 };
 
-const StoreViewInformation = () => {
+const StoreViewInformation = ({
+  title,
+  description,
+  status,
+  link
+}: StoreViewInformationProps) => {
   return (
-    <section className="p-3">
+    <Link href={link} className="p-3">
       <div className="flex flex-col gap-3 mt-2">
         <div className="w-full justify-between flex items-center">
-          <span className="font-semibold text-gray-500 flex-1">
-            Salgadaria.
-          </span>
-          <span className="font-semibold text-white bg-rose-500 p-1 text-sm rounded">
-            Fechado
+          <span className="font-semibold text-gray-700 flex-1">{title}</span>
+          <span
+            className={`font-semibold text-white p-1 px-2 text-sm rounded
+            ${StatusInfo[status].style}`}
+          >
+            {StatusInfo[status].textPT}
           </span>
         </div>
-        <div className="opacity-75">Melhor loja de salgados da região!</div>
+        <div className="text-gray-400">{description || 'Sem descrição'}</div>
       </div>
-    </section>
+    </Link>
   );
 };
 

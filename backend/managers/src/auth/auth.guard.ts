@@ -37,7 +37,6 @@ export class AuthGuard implements CanActivate {
     const token = request?.cookies?.['__access_token'] || null;
     const refresh_token = request?.cookies?.['__refresh_token'] || null;
 
-/*     console.log(token) */
     if (!token || !refresh_token) {
       throw new UnauthorizedException('passports não estão presentes!');
     }

@@ -39,9 +39,9 @@ body {
 }
 .shadow-perspective::before {
   content: "";
-  width: 100%;
+  width: 50%;
   height: 100%;
-  top: 70%;
+  top: 40%;
   left: 0;
   transform: rotateX(70deg);
   filter: blur(10px);

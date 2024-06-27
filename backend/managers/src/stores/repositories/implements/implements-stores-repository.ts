@@ -19,6 +19,19 @@ export class ImplementsStoresRepository implements StoresRepository {
     });
   }
 
+  
+  findByIdWithProductsAndRelations(storeId: string): Promise<Store> {
+    return this.storesRepository.findOne({
+      where: { id: storeId },
+      relations: {
+        products: {
+          productTopics: true
+        }
+      },
+      order: { products: { quantity: 'DESC' } },
+    });
+  }
+
   findAllStoresByManagerId(managerId: string): Promise<Store[]> {
     return this.storesRepository.find({
       where: { managerId }

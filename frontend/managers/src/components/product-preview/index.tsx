@@ -42,8 +42,8 @@ export default function ProductPreview({
               style={{ objectFit: "cover" }}
               layout="fill"
               sizes="(max-width: 768px) 2rem,
-                      (max-width: 1200px) 2rem,
-                      33vw"
+                (max-width: 1200px) 2rem,
+                33vw"
             />
           )}
         </div>

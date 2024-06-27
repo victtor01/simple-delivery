@@ -9,7 +9,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { ProductsRepository } from './repositories/products-repository';
 import { Manager } from 'src/managers/entities/manager.entity';
-import { NotFoundError } from 'rxjs';
+import { NotFoundError, filter } from 'rxjs';
 import { UUID } from 'crypto';
 
 interface IFindByStore {
@@ -42,6 +42,18 @@ export class ProductsService {
     return products;
   }
 
+  async findAllByIdsAndStoreIdWithRelations(
+    productsIds: string[],
+    storeId: string,
+  ): Promise<Product[]> {
+    const products = await this.productRepo.findProductsByIdsAndStore(
+      productsIds,
+      storeId,
+    );
+
+    return products;
+  }
+
   async findByIdAndManagerId(data: { managerId: string; productId: string }) {
     const { managerId, productId } = data;
     const product: Product =
@@ -59,9 +71,23 @@ export class ProductsService {
     return product;
   }
 
-  async findByStore(data: IFindByStore): Promise<Product[]> {
+  async findByStoreWithFilters(
+    data: IFindByStore,
+    filters?: { category?: string | null },
+  ): Promise<Product[]> {
     const { storeId, managerId } = data;
-    const products = await this.productRepo.findByStore(storeId);
+
+    console.log(filters);
+    const queryFilter = this.productRepo.filter({
+      storeId,
+      filters: filters || {},
+    });
+
+    const queryAll = this.productRepo.findByStore(storeId);
+
+    const products = filters?.category ? await queryFilter : await queryAll;
+
+    console.log(products);
 
     if (!products?.[0]?.id) return [];
 

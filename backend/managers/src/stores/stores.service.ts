@@ -25,8 +25,16 @@ export class StoresService {
 
   async findById(storeId: string) {
     const store = await this.storesRepository.findById(storeId);
+  
     return store;
   }
+
+  async findByIdWithProductsAndRelations (storeId: string) {
+    const store = await this.storesRepository.findByIdWithProductsAndRelations(storeId);
+
+    return store;
+  }
+
 
   async findAll(): Promise<Store[]> {
     return await this.storesRepository.findAll();

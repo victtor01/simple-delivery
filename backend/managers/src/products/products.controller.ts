@@ -11,20 +11,21 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Manager } from 'src/managers/entities/manager.entity';
 import { StoresGuard } from 'src/stores/stores.guard';
 import { Store } from 'src/stores/entities/store.entity';
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { extname } from 'path';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-const  BASE_URL_IMAGE_PRODUCTS = 'uploads/products';
+const BASE_URL_IMAGE_PRODUCTS = 'uploads/products';
 
 @ApiTags('Products')
 @UseGuards(StoresGuard)
@@ -43,7 +44,6 @@ export class ProductsController {
   });
 
   private uploadFileProduct = multer({ storage: this.storage });
-
 
   @Post()
   async create(
@@ -76,15 +76,16 @@ export class ProductsController {
   }
 
   @Get()
-
-  @Get('find-by-store')
-  findAllByStore(
+  async findAllByStore(
     @Req() request: { manager: Partial<Manager>; store: Partial<Store> },
+    @Query() filters: { category: string },
   ) {
-    return this.productsService.findByStore({
+    const data = {
       managerId: request.manager.id,
       storeId: request?.store.id,
-    });
+    };
+
+    return await this.productsService.findByStoreWithFilters(data, filters);
   }
 
   @Patch(':productId')
@@ -108,7 +109,7 @@ export class ProductsController {
     @Req() req: { manager: Manager },
     @Param('productId') productId: string,
     @Body() body: UpdateProductDto,
-    
+
     @UploadedFile() file?: Express.Multer.File | null,
   ) {
     try {

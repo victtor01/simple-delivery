@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Req, Res, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  Res,
+  Get,
+  UseGuards,
+  Redirect,
+} from '@nestjs/common';
 import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { Manager } from 'src/managers/entities/manager.entity';
@@ -13,26 +22,16 @@ import {
 } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Stores")
+@ApiTags('Stores')
 @Controller('stores')
 export class StoresController {
-  constructor(
-    private readonly storesService: StoresService,
-    private readonly proxy: ProxyService,
-  ) {}
-
-  @MessagePattern('stores.findAll')
-  async findAll(@Ctx() context: RmqContext) {
-    const stores = await this.storesService.findAll();
-    this.proxy.confirmMessage(context);
-    return JSON.stringify(stores);
-  }
+  constructor(private readonly storesService: StoresService) {}
 
   @Get()
-  async findAllStoresByManagerId(
-    @Req() req: { manager: Manager }
-  ){
-    const stores = await this.storesService.findAll();
+  async findAllByManager(@Req() req: { manager: Manager }) {
+    const stores = await this.storesService.findAllStoresByManagerId(
+      req.manager.id,
+    );
 
     return stores;
   }

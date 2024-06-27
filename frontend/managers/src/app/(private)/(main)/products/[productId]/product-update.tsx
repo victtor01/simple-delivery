@@ -271,15 +271,13 @@ export default function ProductUpdate() {
   });
   if (isLoading || !model) return;
 
-  console.log(categoriesInSchema);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0 } }}
       transition={{ duration: 0.5, type: "spring" }}
-      className="fixed top-0 left-0 z-20 shadow-xl overflow-auto p-10
+      className="fixed top-0 left-0 z-50 shadow-xl overflow-auto p-10
       bg-zinc-900 w-full h-screen flex bg-opacity-50 dark:shadow-black"
     >
       <motion.form

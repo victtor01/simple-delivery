@@ -14,4 +14,6 @@ export abstract class ProductsRepository {
   abstract findByStore(storeId: string): Promise<Product[]>;
   abstract update(productId: string, data: UpdateProductDto): Promise<UpdateResult>
   abstract findByIdAndManager(id: string, managerId: string): Promise<Product>;
+  abstract findProductsByIdsAndStore(productsIds: string[], storeId: string): Promise<Product[]>
+  abstract filter({ storeId, filters }: { storeId?: string, filters: { category?: string }} ): Promise<Product[]>
 }

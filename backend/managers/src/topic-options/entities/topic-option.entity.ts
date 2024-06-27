@@ -4,10 +4,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CreateTopicOptionDto } from '../dto/create-topic-option.dto';
+import { OrdersProduct } from 'src/orders-products/entities/orders-product.entity';
+import { Order } from 'src/orders/entities/order.entity';
 
 @Entity({ name: 'topicOptions' })
 export class TopicOption {
@@ -34,4 +37,7 @@ export class TopicOption {
   })
   @JoinColumn({ name: 'topicProductId' })
   topicProduct: ProductTopic;
+
+  @ManyToMany(() => Order, (order) => order.topicOptions)
+  orders: Order[];
 }

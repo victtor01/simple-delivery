@@ -17,10 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryProvider>
-      <html lang="pt-br">
+    <html lang="pt-br">
+      <ReactQueryProvider>
         <body className={`${fontOpenSans}`}>{children}</body>
-      </html>
-    </ReactQueryProvider>
+      </ReactQueryProvider>
+    </html>
   );
 }

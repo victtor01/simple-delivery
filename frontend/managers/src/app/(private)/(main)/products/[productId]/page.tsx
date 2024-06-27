@@ -19,7 +19,7 @@ interface ProductProps {
 }
 
 const useProduct = (productId: string) => {
-  const { data: product } = useQuery<Product>({
+  const { data: product} = useQuery<Product>({
     queryKey: ["products", productId],
     queryFn: async () => {
       return (await api.get(`/products/${productId}`)).data;
@@ -37,7 +37,7 @@ const TopicsComponent = ({ topic }: { topic: ProductTopic }) => {
       <header className="flex justify-between w-auto items-center">
         <h1
           className="font-semibold text-xl
-                text-gray-600 dark:text-gray-200"
+          text-gray-600 dark:text-gray-200"
         >
           {topic.name}
         </h1>

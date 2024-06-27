@@ -24,3 +24,15 @@ Content-Type: application/json
 
 ###
 GET {{HOST}}/stores HTTP/1.1
+
+###
+
+GET {{HOST}}/stores/293f022e-9b45-47b4-824c-063e4cdfe719 HTTP/1.1
+###
+
+POST {{HOST}}/orders HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "teste"
+}

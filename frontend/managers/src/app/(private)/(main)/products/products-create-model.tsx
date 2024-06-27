@@ -75,7 +75,7 @@ function ProductsCreateModel() {
     <form
       onSubmit={handleSubmit(createProduct)}
       className="w-full h-screen overflow-auto bg-zinc-950 
-      fixed left-0 z-20 bg-opacity-40 backdrop-blur-[2px]
+      fixed left-0 z-50 bg-opacity-40 backdrop-blur-[2px]
       flex p-4"
     >
       <motion.div

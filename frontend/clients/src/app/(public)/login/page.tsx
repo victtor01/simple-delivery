@@ -71,7 +71,7 @@ export default function Login() {
       variants={variants}
       onSubmit={handleSubmit(loginUser)}
       className="p-6 bg-white m-auto w-full max-w-[54rem] min-h-screen rounded-t-3xl
-      lg:min-h-[32rem] flex gap-10 lg:rounded z-20 shadow-[0px_160px_50px_-150px_rgba(0,0,0,0.6)] "
+      lg:min-h-[32rem] flex gap-10 lg:rounded z-20 shadow-[0px_160px_100px_-150px_rgba(0,0,0,0.6)] "
     >
       <section className="hidden lg:flex flex-col gap-4 flex-1 items-center justify-center overflow-hidden relative">
         <div className="text-3xl text-center font-semibold text-gray-700 z-20">

@@ -15,6 +15,8 @@ import { CategoriesModule } from './categories/categories.module';
 import { StoresGuard } from './stores/stores.guard';
 import { ProductTopicsModule } from './product-topic/product-topics.module';
 import { TopicOptionsModule } from './topic-options/topic-options.module';
+import { OrdersModule } from './orders/orders.module';
+import { OrdersProductsModule } from './orders-products/orders-products.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { TopicOptionsModule } from './topic-options/topic-options.module';
     CategoriesModule,
     ProductTopicsModule,
     TopicOptionsModule,
+    OrdersModule,
+    OrdersProductsModule,
   ],
   providers: [
     {

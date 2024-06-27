@@ -6,12 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Store } from './entities/store.entity';
 import { Module } from '@nestjs/common';
 import { ProxyModule } from 'src/proxy/proxy.module';
-import { APP_GUARD } from '@nestjs/core';
 import { StoresGuard } from './stores.guard';
+import { StoresControllerMessages } from './stores-messages.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Store]), ProxyModule],
-  controllers: [StoresController],
+  controllers: [StoresController, StoresControllerMessages],
   providers: [
     StoresGuard,
     StoresService,

@@ -32,7 +32,7 @@ export class ProxyService {
     try {
       const originalMsg = context.getMessage();
       const channel = context.getChannelRef();
-      channel.ack(originalMsg);
+      channel.ack(originalMsg); 
     } catch (error) {
       throw new Error(error);
     }

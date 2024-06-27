@@ -10,7 +10,6 @@ export class TopicOptionsController {
   @Post()
   create(@Body() createTopicOptionDto: CreateTopicOptionDto) {
     console.log(createTopicOptionDto);
- /*    return this.topicOptionsService.save(createTopicOptionDto); */
   }
 
 }

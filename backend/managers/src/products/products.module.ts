@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductsRepository } from './repositories/products-repository';
 import { ImplementsProductsRepository } from './repositories/implements/implements-products-repository';
+import { ProxyModule } from 'src/proxy/proxy.module';
+import { ProductsMessagesController } from './products-messages.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product])],
-  controllers: [ProductsController],
+  imports: [TypeOrmModule.forFeature([Product]), ProxyModule],
+  controllers: [ProductsController, ProductsMessagesController],
   providers: [
     ProductsService,
     {

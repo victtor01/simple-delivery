@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/api";
-import { Product } from "@/entities/product";
+import { Product } from "@/interfaces/product";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";

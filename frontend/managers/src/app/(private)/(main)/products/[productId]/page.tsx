@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Product } from "@/entities/product";
+import { Product } from "@/interfaces/product";
 import { api } from "@/api";
 import { VscListFlat } from "react-icons/vsc";
 import { MdDriveFileRenameOutline } from "react-icons/md";
@@ -9,8 +9,8 @@ import { IoMdCart, IoMdPricetag } from "react-icons/io";
 import { getImageProduct } from "@/utils/getImageProduct";
 import Image from "next/image";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { ProductTopic } from "@/entities/product-topic";
-import { Category } from "@/entities/category";
+import { ProductTopic } from "@/interfaces/product-topic";
+import { Category } from "@/interfaces/category";
 
 interface ProductProps {
   params: {

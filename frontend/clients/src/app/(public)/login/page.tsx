@@ -10,6 +10,7 @@ import Cookies from "universal-cookie";
 import Link from "next/link";
 import { z } from "zod";
 import { Variants, motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const cookies = new Cookies();
 
@@ -22,36 +23,34 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 
 const useLogin = () => {
   // form state
-  const { register, handleSubmit } = useForm<LoginFormData>({
+  const { register, handleSubmit, reset } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   // function for create user
   const loginUser = async (body: LoginFormData) => {
     // get response auth
-    const response = await api.post("/auth", {
-      ...body,
-    });
+    try {
+      const response = await api.post("/auth", {
+        ...body,
+      });
 
-    // verify access_token
-    const { access_token, refresh_token, user } = response.data || {
-      access_token: null,
-      refresh_token: null,
-      user: {},
-    };
+      if (!response.data.client)
+        throw new Error("Houve um erro ao tentar fazer o login!");
 
-    // test
-    if (!access_token || !refresh_token) {
-      throw new Error("Houve um erro ao tentar fazer o login!");
+      const { client } = response.data;
+      const tokenUser = await createToken({ payload: client });
+
+      cookies.set("session", tokenUser);
+      document.location.href = "/";
+    } catch (error) {
+      toast.error("Informações incorretas!");
+      reset();
     }
-
-    // create token
-    const tokenUser = await createToken({ payload: user });
-
-    // set cookie session
-    cookies.set("session", tokenUser);
-
-    document.location.href = "/";
   };
 
   return {
@@ -103,7 +102,7 @@ export default function Login() {
               type="text"
               {...register("email")}
               className="w-full p-2 bg-zinc-50 outline-none border-2 border-transparent 
-              focus:border-orange-500 rounded focus:shadow focus:shadow-orange-100"
+              focus:border-orange-500 rounded focus:shadow focus:shadow-orange-100 text-gray-600 font-semibold"
               placeholder="example@gmail.com"
             />
           </label>
@@ -121,7 +120,7 @@ export default function Login() {
               type="password"
               {...register("password")}
               className="w-full p-2 bg-zinc-50 outline-none border-2 border-transparent 
-              focus:border-orange-500 rounded focus:shadow focus:shadow-orange-100"
+              focus:border-orange-500 rounded focus:shadow focus:shadow-orange-100 text-gray-600 font-semibold"
               placeholder="••••••••••"
             />
           </label>

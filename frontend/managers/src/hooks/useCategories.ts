@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from "@/api";
-import { Category } from "@/entities/category";
+import { Category } from "@/interfaces/category";
 import { useQuery } from "@tanstack/react-query";
 
 const useCategories = () => {

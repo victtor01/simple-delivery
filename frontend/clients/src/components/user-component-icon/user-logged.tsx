@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaUserLarge } from "react-icons/fa6";
-import Cookies from "universal-cookie";
 
 const UserLogged = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,7 +34,7 @@ const UserLogged = () => {
       <button
         type="button"
         onClick={handleShow}
-        className="p-3 rounded-full bg-zinc-100 opacity-90 hover:opacity-100 hover:text-orange-500"
+        className="p-3 rounded-full bg-white shadow hover:opacity-100 hover:text-orange-500"
       >
         <FaUserLarge />
       </button>

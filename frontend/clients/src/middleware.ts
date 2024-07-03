@@ -6,22 +6,28 @@ export const config = {
 };
 
 const publicRoutes = ["/"];
-const parsePublic = ["/login", "/register"];
+const parsePublic = ["/login", "/register", /^\/store\/.*/];
 
 export async function middleware(req: NextRequest) {
   const pathname: string = req.nextUrl.pathname;
 
-  if (publicRoutes.includes(pathname)) {
+  // Verifica se a rota é pública
+  const isPublicRoute =
+    publicRoutes.includes(pathname) ||
+    parsePublic.some((route) =>
+      typeof route === "string" ? route === pathname : route.test(pathname)
+    );
+
+  if (isPublicRoute) {
     return NextResponse.next();
   }
 
-  // valid session
+  // Verifica a sessão
   const session = useSession();
-  const validSession: boolean = await session.isSessionValid();
-  
-  // when the session is valid but the user cannot access the public route
-  if (parsePublic.includes(pathname) && validSession) {
-    return NextResponse.redirect(new URL("/", req.url));
+  const validSession = await session.isSessionValid();
+
+  if (!validSession) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();

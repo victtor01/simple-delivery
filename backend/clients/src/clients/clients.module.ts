@@ -3,7 +3,7 @@ import { ClientsController } from './clients.controller';
 import { ClientsService } from './clients.service';
 import { ClientsRepository } from './repositories/clients-repository';
 import { ImplementsClientsRepository } from './repositories/implements/implements-clients-repository';
-import Client from './clients.entity';
+import Client from './entities/clients.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

@@ -1,4 +1,4 @@
-import { Product } from "@/entities/product";
+import { Product } from "@/interfaces/product";
 import { getImageProduct } from "@/utils/getImageProduct";
 import Image from "next/image";
 import Link from "next/link";

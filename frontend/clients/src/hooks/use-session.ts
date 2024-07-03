@@ -3,7 +3,7 @@ import * as jose from "jose";
 
 const useSession = () => {
   const openSessionToken = async (token: string) => {
-    const refresh = cookies().get("refresh_token")?.value;
+    const refresh = cookies().get("__refresh_token")?.value;
     const env = process.env.SECRET_KEY;
     const str: string = `${env}${refresh}`;
     const secret = new TextEncoder().encode(str);
@@ -19,24 +19,18 @@ const useSession = () => {
 
   const isSessionValid = async () => {
     const sessionCookie = cookies().get("session");
-    const refresh_token = cookies().get("refresh_token");
+    const refresh_token = cookies().get("__refresh_token");
 
-    if (!sessionCookie || !refresh_token) {
-      return false;
-    }
+    if (!sessionCookie || !refresh_token) return false;
 
     const { value } = sessionCookie;
-
     const valide = await openSessionToken(value);
-
-    console.log(valide);
 
     if (!valide?.email) {
       return false;
     }
 
     const exp = valide?.exp || " ";
-
     const currentDate = new Date().getTime();
 
     return (exp as number) * 1000 > currentDate;
@@ -49,7 +43,7 @@ const useSession = () => {
     const cookieJson = await openSessionToken(cookie?.value || "");
 
     return {
-      user: cookieJson,
+      client: cookieJson,
     };
   };
 

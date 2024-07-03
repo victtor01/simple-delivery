@@ -12,14 +12,6 @@ import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { Manager } from 'src/managers/entities/manager.entity';
 import { Response } from 'express';
-import { ProxyService } from 'src/proxy/proxy.service';
-import {
-  Ctx,
-  EventPattern,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Stores')

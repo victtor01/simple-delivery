@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/api";
-import { Product } from "@/entities/product";
+import { Product } from "@/interfaces/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
@@ -28,7 +28,7 @@ import { PiPlus } from "react-icons/pi";
 import { BiMinus } from "react-icons/bi";
 import { z } from "zod";
 import { useCategories } from "@/hooks/useCategories";
-import { Category } from "@/entities/category";
+import { Category } from "@/interfaces/category";
 
 const CONDITION_TO_NULL_PHOTO = "NOTFOUND";
 

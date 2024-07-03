@@ -12,7 +12,7 @@ export const createToken = async ({
   payload = {},
   tokenExpiration = "1d",
 }: createTokenProps): Promise<string> => {
-  const refresh = cookies().get("refresh_token")?.value;
+  const refresh = cookies().get("__refresh_token")?.value;
   const env = process.env.SECRET_KEY;
   const str: string = `${env}${refresh}`;
 

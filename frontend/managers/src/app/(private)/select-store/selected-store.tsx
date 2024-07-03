@@ -1,6 +1,6 @@
 "use client";
 
-import { Store } from "@/entities/store";
+import { Store } from "@/interfaces/store";
 import { fontValela } from "@/fonts";
 import { motion } from "framer-motion";
 import { FaUnlock, FaUser } from "react-icons/fa";

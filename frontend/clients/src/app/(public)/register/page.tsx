@@ -37,7 +37,7 @@ const useRegister = () => {
 
   const createUser = async (data: RegisterFormData) => {
     const { repeatPassword, ...props } = data;
-    const response = await api.post('/users/', {
+    const response = await api.post('/clients/', {
       ...props
     });
 

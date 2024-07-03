@@ -22,6 +22,8 @@ export class ProductsMessagesController {
     @Ctx() context: RmqContext,
     @Payload() payload: { storeId: string; productIds: string[] },
   ) {
+    this.logger.log("Passando pelo products.findAllByIdWithAllRelations")
+
     if (!payload?.productIds || !payload.storeId) {
       this.logger.error('Campos para pegar todos os dados dos produtos faltando!' , payload);
       this.proxy.confirmMessage(context);
@@ -34,11 +36,8 @@ export class ProductsMessagesController {
         payload.storeId,
       );
 
-    this.logger.error(products)
-
     this.proxy.confirmMessage(context);
-    return JSON.stringify(products);
 
-    
+    return JSON.stringify(products);
   }
 }

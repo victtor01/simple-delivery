@@ -1,4 +1,4 @@
-import { Store } from "@/entities/store";
+import { Store } from "@/interfaces/store";
 import { cookies } from "next/headers";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";

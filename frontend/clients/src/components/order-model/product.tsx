@@ -6,14 +6,19 @@ import { IoClose } from "react-icons/io5";
 import { ProductsTopics } from "./productsTopic";
 import { useCartStore } from "@/states/cart-store";
 import { formatToBRL } from "@/utils/format-to-brl";
+import { BiMinus, BiPlus } from "react-icons/bi";
+import { queryClient } from "@/providers/react-query-provider";
+import { Controller, useFormContext } from "react-hook-form";
+import { SchemaOrderData } from ".";
 
-interface ProductOrderModelProps {
+type ProductOrderModelProps = {
   index: number;
   product: Product;
-}
+};
 
-const ProductOrderModel = ({ product, index }: ProductOrderModelProps) => {
+const useProductOrderModel = (product: Product) => {
   const [removeToCart] = useCartStore((state) => [state.removeToCart]);
+  const formContext = useFormContext<SchemaOrderData>();
 
   const remove = () => {
     const cartStringfy = localStorage.getItem("cart") || null;
@@ -27,9 +32,23 @@ const ProductOrderModel = ({ product, index }: ProductOrderModelProps) => {
       (productCurrent) => productCurrent.id !== product.id
     );
 
+    queryClient.setQueryData(["cart"], (prevData: Product[]) => [
+      ...prevData.filter((curr) => curr.id !== product.id),
+    ]);
+
     removeToCart(product.id);
+
     localStorage.setItem("cart", JSON.stringify(newItems));
   };
+
+  return {
+    formContext,
+    remove,
+  };
+};
+
+const ProductOrderModel = ({ product, index }: ProductOrderModelProps) => {
+  const { formContext, remove } = useProductOrderModel(product);
 
   return (
     <motion.div
@@ -39,12 +58,13 @@ const ProductOrderModel = ({ product, index }: ProductOrderModelProps) => {
       transition={{ delay: 0.2 * (index + 1) }}
       className="w-full p-3 bg-white rounded hover:shadow opacity-95 hover:opacity-100 gap-2 flex flex-col relative"
     >
-      <span className="w-full top-[-0.5rem] h-[0.5rem] left-[50%] translate-x-[-50%] bg-gray-600 absolute
-      rounded-t-full"/>
-
       <div className="font-semibold text-gray-600 flex justify-between items-center text-xl">
         <span className="flex-[2]">{product.name}</span>
-        <span className="flex-1 text-green-700">{formatToBRL(Number(product.price))}</span>
+        <div className="flex-1">
+          <span className="text-green-700 text-lg bg-emerald-50 rounded-md p-1 px-2">
+            {formatToBRL(Number(product.price))}
+          </span>
+        </div>
         <button
           type="button"
           onClick={remove}
@@ -55,19 +75,39 @@ const ProductOrderModel = ({ product, index }: ProductOrderModelProps) => {
         </button>
       </div>
 
-      <div className="flex flex-col bg-gray-50 bg-opacity-40 p-2 rounded shadow-inner">
-        {!product?.productTopics?.length && (
-          <div className="w-full p-2 font-semibold text-gray-400 text-sm">
-            Nenhum opção disponível
-          </div>
-        )}
-        {product?.productTopics?.map((productTopic, index: number) => (
-          <ProductsTopics productTopic={productTopic} key={index} />
-        ))}
-      </div>
+      {product?.productTopics?.length > 0 && (
+        <div className="flex flex-col rounded ">
+          {product?.productTopics?.map((productTopic, index: number) => (
+            <ProductsTopics productTopic={productTopic} key={index} />
+          ))}
+        </div>
+      )}
 
-      <footer>
-        
+      <footer className="flex gap-2 items-center border-t pt-2">
+        <Controller
+          control={formContext.control}
+          name={`${index}.quantity`}
+          render={({ field }) => (
+            <>
+              <button
+                type="button"
+                className="w-8 h-8 bg-gray-50 border text-gray-500 rounded grid place-items-center"
+              >
+                <BiMinus />
+              </button>
+              <span className="w-8 h-8 text-gray-700 rounded-lg grid place-items-center">
+                {JSON.stringify(field.value)}
+              </span>
+              <button
+                onClick={() => field.onChange((prev: number) => prev + 1)}
+                type="button"
+                className="w-8 h-8 bg-orange-600 text-white shadow rounded grid place-items-center"
+              >
+                <BiPlus />
+              </button>
+            </>
+          )}
+        />
       </footer>
     </motion.div>
   );

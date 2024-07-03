@@ -6,7 +6,7 @@ import { IoAdd } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
-import { Store } from "@/entities/store";
+import { Store } from "@/interfaces/store";
 import { useState } from "react";
 import { SelectedStore } from "./selected-store";
 import { FaCirclePlus } from "react-icons/fa6";

@@ -11,8 +11,11 @@ export default class Client {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'name', nullable: false })
-  name: string;
+  @Column({ name: 'fistName', nullable: false })
+  firstName: string;
+
+  @Column({ name: 'lastName', nullable: false })
+  lastName: string;
 
   @Column({ name: 'email', nullable: false, unique: true })
   email: string;

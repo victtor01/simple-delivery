@@ -17,6 +17,7 @@ export class ProductsController {
   @Post('findByIds')
   async findAllByIds(@Body() { storeId, productIds }: FindProductsByIds) {
     try {
+      console.log(productIds)
       return await this.productsService
         .findAllByIds({
           storeId,

@@ -7,8 +7,6 @@ interface ProductTopicsProps {
 const ProductsTopics = (props: ProductTopicsProps) => {
   const { productTopic } = props;
 
-  console.log(productTopic)
-
   return (
     <div
       className="text-gray-500 flex flex-col

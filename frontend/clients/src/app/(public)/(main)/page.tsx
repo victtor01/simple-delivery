@@ -26,11 +26,10 @@ export default function Home() {
       <div className="grid grid-cols-5 mx-auto w-full max-w-main gap-6">
         {stores?.map((store) => {
           return (
-            <Store.View link={store.id}>
+            <Store.View link={`/store/${store.id}`}>
               <Store.Photo />
               <Store.Information
                 title={store.name}
-                link="/"
                 description={store.description}
                 status={'open'}
               />

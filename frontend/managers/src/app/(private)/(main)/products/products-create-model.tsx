@@ -14,7 +14,7 @@ import { api } from "@/api";
 import { toast } from "react-toastify";
 import { QueryClient } from "@tanstack/react-query";
 import { queryClient } from "@/providers/query-client";
-import { Product } from "@/entities/product";
+import { Product } from "@/interfaces/product";
 import { useRouter } from "next/navigation";
 
 const schemaCreateProduct = z.object({

@@ -22,7 +22,6 @@ interface StoreViewPhotoProps {
 interface StoreViewInformationProps {
   title: string;
   description: string;
-  link: string;
   status: StatusText;
 }
 
@@ -50,10 +49,9 @@ const StoreViewInformation = ({
   title,
   description,
   status,
-  link
 }: StoreViewInformationProps) => {
   return (
-    <Link href={link} className="p-3">
+    <div className="p-3">
       <div className="flex flex-col gap-3 mt-2">
         <div className="w-full justify-between flex items-center">
           <span className="font-semibold text-gray-700 flex-1">{title}</span>
@@ -66,7 +64,7 @@ const StoreViewInformation = ({
         </div>
         <div className="text-gray-400">{description || 'Sem descrição'}</div>
       </div>
-    </Link>
+    </div>
   );
 };
 
